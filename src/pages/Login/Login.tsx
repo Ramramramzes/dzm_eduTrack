@@ -3,6 +3,7 @@ import styles from './login.module.css';
 import { AppDispatch, RootState } from '../../store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLogin, setPassword } from '../../store/loginState';
+import { checkLogin } from '../../services/checkLogin';
 
 export function Login() {
   const LoginState = useSelector((state: RootState) => state.login);
@@ -16,9 +17,11 @@ export function Login() {
     dispatch(setPassword(e.target.value))
   }
 
-  const submitHandler = (e:FormEvent) => {
+  const submitHandler = async (e:FormEvent) => {
     e.preventDefault();
-    console.log(LoginState.login, LoginState.password);
+    const res = await checkLogin(LoginState.login,LoginState.password)
+    console.log(res);
+    
   }
 
   return (
