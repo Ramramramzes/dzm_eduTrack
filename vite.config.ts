@@ -7,6 +7,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/login': SERVER,
+      '/check-profile': SERVER,
+      '/default-data': SERVER,
     }
   }
 })

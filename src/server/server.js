@@ -21,6 +21,36 @@ app.get('/login', (req, res) => {
   });
 });
 
+app.get('/check-profile', (req, res) => {
+  const sql = `SELECT * FROM \`profile\` WHERE \`user_id\` = ?`
+
+  const params = [req.query.id]
+
+  connection.query(sql, params , (error, results) => {
+    if (error) {
+      res.status(500).json({ error: 'Ошибка при выполнении запроса к базе данных' });
+      console.log(error.code, error.message);
+    } else {
+      res.send(results);
+    }
+  });
+});
+
+app.get('/default-data', (req, res) => {
+  const sql = `SELECT * FROM \`default_data\` WHERE \`user_id\` = ?`
+
+  const params = [req.query.id]
+
+  connection.query(sql, params , (error, results) => {
+    if (error) {
+      res.status(500).json({ error: 'Ошибка при выполнении запроса к базе данных' });
+      console.log(error.code, error.message);
+    } else {
+      res.send(results);
+    }
+  });
+});
+
 app.listen(port, () => {
   console.log(`Запущен на ${port} порту`);
 })

@@ -2,10 +2,12 @@ import { ChangeEvent, FormEvent } from 'react';
 import styles from './login.module.css';
 import { AppDispatch, RootState } from '../../store/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLogin, setPassword } from '../../store/loginState';
+import { setDefaultData, setLogin, setPassword } from '../../store/loginState';
 import { checkLogin } from '../../services/checkLogin';
 import { useNavigate } from 'react-router-dom';
 import { setId } from '../../store/userState';
+import { checkProfileData } from '../../services/checkProfileData';
+import { getDefaultData } from '../../services/getDefaultData';
 
 export function Login() {
   const LoginState = useSelector((state: RootState) => state.login);
@@ -28,8 +30,15 @@ export function Login() {
     }else{
       dispatch(setLogin(''))
       dispatch(setPassword(''))
-      dispatch(setId(res[0].id))
-      navigation('/dashboard')
+      const isCreated = await checkProfileData(res[0].id)
+      if(isCreated != 0){
+        dispatch(setId(res[0].id))
+        navigation('/dashboard')
+      }else{
+        const defaultData = await getDefaultData(res[0].id)
+        dispatch(setDefaultData(defaultData))
+        navigation('/reg-profile')
+      }
       
     }
   }

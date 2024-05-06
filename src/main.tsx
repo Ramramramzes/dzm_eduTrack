@@ -6,12 +6,14 @@ import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } 
 import { Provider } from 'react-redux'
 import store from './store/store.ts'
 import { Dashboard } from './pages/Dashboard/Dashboard.tsx'
+import { FillProfile } from './pages/FillProfile/FillProfile.tsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<App />} />
       <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/reg-profile" element={<FillProfile />} />
     </>
   )
 )

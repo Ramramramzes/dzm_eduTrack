@@ -3,11 +3,21 @@ import { createSlice } from "@reduxjs/toolkit";
 interface ILogin {
   login: string;
   password: string;
+  defaultData: defaultDataItem[];
+}
+
+interface defaultDataItem{
+  user_id: number;
+  org_id: number;
+  name: string;
+  role: string;
 }
 
 const initialState: ILogin = {
   login: '',
-  password: ''
+  password: '',
+  defaultData: [],
+
 }
 
 const loginSlice = createSlice({
@@ -19,9 +29,12 @@ const loginSlice = createSlice({
     },
     setPassword: (state, action) => {
       state.password = action.payload
+    },
+    setDefaultData: (state, action) => {
+      state.defaultData = action.payload
     }
   }
 })
 
-export const { setLogin, setPassword } = loginSlice.actions
+export const { setLogin, setPassword, setDefaultData } = loginSlice.actions
 export default loginSlice.reducer
