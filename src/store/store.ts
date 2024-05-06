@@ -1,6 +1,8 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import loginReducer from './loginState'
+
 const rootReducer = combineReducers({
-  reducer:{}
+  login: loginReducer,
 })
 
 const store = configureStore({
