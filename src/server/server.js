@@ -7,9 +7,11 @@ const port = 3001
 app.use(express.json());
 
 app.get('/login', (req, res) => {
-  const sql = `SELECT * FROM \`users\` WHERE \`login\` = '${req.query.login}' AND \`password\` = '${req.query.password}'`
+  const sql = `SELECT * FROM \`users\` WHERE BINARY \`login\` =  ? AND BINARY \`password\` = ?`
 
-  connection.query(sql, (error, results) => {
+  const params = [req.query.login, req.query.password]
+
+  connection.query(sql, params , (error, results) => {
     if (error) {
       res.status(500).json({ error: 'Ошибка при выполнении запроса к базе данных' });
       console.log(error.code, error.message);
