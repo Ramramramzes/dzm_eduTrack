@@ -1,10 +1,12 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import loginReducer from './loginState'
 import userReducer from './userState'
+import newProfileReducer from './createProfileState'
 
 const rootReducer = combineReducers({
   login: loginReducer,
   user: userReducer,
+  newProfile: newProfileReducer,
 })
 
 const store = configureStore({

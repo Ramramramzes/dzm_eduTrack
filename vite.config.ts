@@ -9,6 +9,7 @@ export default defineConfig({
       '/login': SERVER,
       '/check-profile': SERVER,
       '/default-data': SERVER,
+      '/default-names': SERVER,
     }
   }
 })
