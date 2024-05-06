@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setLogin, setPassword } from '../../store/loginState';
 import { checkLogin } from '../../services/checkLogin';
 import { useNavigate } from 'react-router-dom';
+import { setId } from '../../store/userState';
 
 export function Login() {
   const LoginState = useSelector((state: RootState) => state.login);
@@ -27,6 +28,7 @@ export function Login() {
     }else{
       dispatch(setLogin(''))
       dispatch(setPassword(''))
+      dispatch(setId(res[0].id))
       navigation('/dashboard')
       
     }
