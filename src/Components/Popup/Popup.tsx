@@ -1,5 +1,4 @@
-// import styles from './popup.module.css';
-
+import styles from './popup.module.css';
 import { createPortal } from "react-dom";
 
 export function Popup() {
@@ -8,6 +7,8 @@ export function Popup() {
     return <>no poput</>
   }
   return createPortal(
-    <>Popup</>,root_popup
+    <div className={styles.popupBlock}>
+    popup
+    </div>,root_popup
   );
 }
