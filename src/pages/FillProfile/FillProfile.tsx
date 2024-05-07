@@ -6,12 +6,15 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { getDefaultNames } from "../../services/getDefaultNames";
 import { satisfiesContactInformTel, setContactInformMail, setFioInform, setFioRuk, setMmpCount, setName, setOrgId, setRole, setShortName, setSmpCount, setUserId, setWebsite } from "../../store/createProfileState";
 import { Adress } from "../../Components/Adress";
+import { sendProfile } from "../../services/sendProfile";
+import { useNavigate } from "react-router-dom";
 
 export function FillProfile() {
   const item = useSelector((state: RootState) => state.login.defaultData[0]);
   const ProfileState = useSelector((state: RootState) => state.newProfile);
   const dispatch = useDispatch<AppDispatch>();
   const [names, setNames] = useState([{id: 0, name: '', short_name: ''}])
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,15 +63,19 @@ export function FillProfile() {
     dispatch(setMmpCount(e.target.value))
   }
 
-  const handleSubmit = () => {
-    console.log(ProfileState);
-  }
+  // const handleSubmit = async () => {
+  //   console.log(ProfileState);
+  // }
 
 
   return (
-      <form onSubmit={(e:FormEvent) => {
+      <form onSubmit={async (e:FormEvent) => {
         e.preventDefault()
-        handleSubmit()
+        const res = await sendProfile(ProfileState)
+        if(res === 200){
+          navigate('/dashboard')
+        }
+        
       }}>
         <div>
           <label htmlFor="select_name">Выберите организацию</label>

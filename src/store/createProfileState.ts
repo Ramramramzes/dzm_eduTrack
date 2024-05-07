@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface INewProfile{
+export interface INewProfile{
   user_id: number;
   org_id: number;
   name: string;

@@ -10,6 +10,7 @@ export default defineConfig({
       '/check-profile': SERVER,
       '/default-data': SERVER,
       '/default-names': SERVER,
+      '/send-profile': SERVER,
     }
   }
 })
