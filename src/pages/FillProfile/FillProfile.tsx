@@ -63,11 +63,6 @@ export function FillProfile() {
     dispatch(setMmpCount(e.target.value))
   }
 
-  // const handleSubmit = async () => {
-  //   console.log(ProfileState);
-  // }
-
-
   return (
       <form onSubmit={async (e:FormEvent) => {
         e.preventDefault()
