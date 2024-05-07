@@ -8,11 +8,11 @@ interface INewProfile{
   fio_ruk: string;
   fio_inform: string;
   contact_inform_mail: string;
-  contact_inform_tel: number;
+  contact_inform_tel: string;
   website: string;
   smp_count: number;
   mmp_count: number;
-  adress: object;
+  adress: {id: number; value: string}[];
   role: string;
 }
 
@@ -24,11 +24,11 @@ const initialState:INewProfile = {
   fio_ruk: '',
   fio_inform: '',
   contact_inform_mail: '',
-  contact_inform_tel: 0,
+  contact_inform_tel: '',
   website: '',
   smp_count: 0,
   mmp_count: 0,
-  adress: {},
+  adress: [{id: new Date().getTime(), value: ''}],
   role: '',
 }
 

@@ -2,7 +2,7 @@
 
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { getDefaultNames } from "../../services/getDefaultNames";
 import { satisfiesContactInformTel, setContactInformMail, setFioInform, setFioRuk, setMmpCount, setName, setOrgId, setRole, setShortName, setSmpCount, setUserId, setWebsite } from "../../store/createProfileState";
 import { Adress } from "../../Components/Adress";
@@ -64,11 +64,15 @@ export function FillProfile() {
     console.log(ProfileState);
   }
 
+
   return (
-      <div>
+      <form onSubmit={(e:FormEvent) => {
+        e.preventDefault()
+        handleSubmit()
+      }}>
         <div>
           <label htmlFor="select_name">Выберите организацию</label>
-          <select value={ProfileState.short_name} onChange={selectChangeHandler} name="select_name">
+          <select value={ProfileState.short_name} onChange={selectChangeHandler} name="select_name" required>
             <option value=''>Выберите организацию</option>
             {names.map((el)=> {
               return <option key={el.id} value={el.short_name}>{el.short_name}</option>
@@ -77,40 +81,41 @@ export function FillProfile() {
         </div>
         <div>
           <label htmlFor="fioRuk">ФИО Руководителя</label>
-          <input type="text" name="fioRuk" onChange={fioRukHandler} value={ProfileState.fio_ruk}/>
+          <input type="text" name="fioRuk" onChange={fioRukHandler} value={ProfileState.fio_ruk} placeholder="Введите ФИО" required/>
         </div>
         <div>
           <label htmlFor="fioInform">ФИО Ответственного</label>
-          <input type="text" name="fioInform" onChange={fioInformHandler} value={ProfileState.fio_inform}/>
+          <input type="text" name="fioInform" onChange={fioInformHandler} value={ProfileState.fio_inform} placeholder="Введите ФИО" required/>
         </div>
         <div>
           <label htmlFor="mailInform">Почта Ответственного</label>
-          <input type="text" name="mailInform" onChange={contactMailHandler} value={ProfileState.contact_inform_mail}/>
+          <input type="text" name="mailInform" onChange={contactMailHandler} value={ProfileState.contact_inform_mail} placeholder="Введите Почту" required/>
         </div>
         <div>
           <label htmlFor="telInform">Номер телефона Ответственного</label>
-          <input type="text" name="telInform" onChange={contactTelHandler} value={ProfileState.contact_inform_tel}/>
+          <input type="text" name="telInform" onChange={contactTelHandler} value={ProfileState.contact_inform_tel} placeholder="Введите номер телефона" required/>
         </div>
         <div>
           <label htmlFor="website">Сайт</label>
-          <input type="text" name="website" onChange={websiteHandler} value={ProfileState.website}/>
+          <input type="text" name="website" onChange={websiteHandler} value={ProfileState.website} placeholder="Введите сайт" required/>
         </div>
         {item.role === 'МО' && (
           <>
             <div>
               <label htmlFor="smpCount">Количество СМП</label>
-              <input type="number" name="smpCount" onChange={smpCountHandler} value={ProfileState.smp_count}/>
+              <input type="number" name="smpCount" onChange={smpCountHandler} value={ProfileState.smp_count} placeholder="Введите кол-во СМП" required/>
             </div>
             <div>
               <label htmlFor="smpCount">Количество ММП</label>
-              <input type="number" name="smpCount" onChange={mmpCountHandler} value={ProfileState.mmp_count}/>
+              <input type="number" name="smpCount" onChange={mmpCountHandler} value={ProfileState.mmp_count} placeholder="Введите кол-во ММП" required/>
             </div>
           </>
         )}
         {item.role === 'ОО' && (
           <Adress />
         )}
-        <button onClick={handleSubmit}>Отправить</button>
-      </div>
+        
+        <input type="submit" value="Отправить"/>
+      </form>
   );
 }
