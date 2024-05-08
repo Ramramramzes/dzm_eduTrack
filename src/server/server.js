@@ -78,12 +78,28 @@ app.post('/send-profile', (req, res) => {
     \`website\`, 
     \`smp_count\`, 
     \`mmp_count\`, 
-    \`adress\`, 
     \`role\`) 
     VALUES 
-    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `
-  const params = [req.body.user_id, req.body.org_id, req.body.name, req.body.short_name, req.body.fio_ruk, req.body.fio_inform, req.body.contact_inform_mail, req.body.contact_inform_tel, req.body.website, req.body.smp_count, req.body.mmp_count, JSON.stringify(req.body.adress), req.body.role]
+  const params = [req.body.user_id, req.body.org_id, req.body.name, req.body.short_name, req.body.fio_ruk, req.body.fio_inform, req.body.contact_inform_mail, req.body.contact_inform_tel, req.body.website, req.body.smp_count, req.body.mmp_count, req.body.role]
+  
+  connection.query(sql,params,(error, results) => {
+    if (error) {
+      res.status(500).json({ error: 'Ошибка при выполнении запроса к базе данных' });
+      console.log(error.code, error.message);
+    } else {
+      res.send(results);
+    }
+  });
+});
+
+app.post('/send-adress', (req, res) => {
+  const sql = `
+  INSERT INTO \`adresses\`(\`profile_id\`,\`adress\`)
+  VALUES (?, ?)
+  `
+  const params = [req.body.profile_id, req.body.adress]
   
   connection.query(sql,params,(error, results) => {
     if (error) {

@@ -11,6 +11,7 @@ export default defineConfig({
       '/default-data': SERVER,
       '/default-names': SERVER,
       '/send-profile': SERVER,
+      '/send-adress': SERVER,
     }
   }
 })

@@ -8,6 +8,7 @@ import { satisfiesContactInformTel, setContactInformMail, setFioInform, setFioRu
 import { Adress } from "../../Components/Adress";
 import { sendProfile } from "../../services/sendProfile";
 import { useNavigate } from "react-router-dom";
+import { sendAdress } from "../../services/sendAdress";
 
 export function FillProfile() {
   const item = useSelector((state: RootState) => state.login.defaultData[0]);
@@ -63,15 +64,21 @@ export function FillProfile() {
     dispatch(setMmpCount(e.target.value))
   }
 
+  const submitFormHandler = async(e:FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const resSendProfile = await sendProfile(ProfileState)
+    let adressStatus = 200
+    ProfileState.adress.map(async (adress) =>{
+      const res = await sendAdress(adress, ProfileState.user_id)
+      res ? adressStatus = res : false
+      res != 200 ? alert('Ошибка отправки адреса'): false;
+    })
+    if(resSendProfile === 200 && adressStatus === 200){
+      navigate('/dashboard')
+    }
+  }
   return (
-      <form onSubmit={async (e:FormEvent) => {
-        e.preventDefault()
-        const res = await sendProfile(ProfileState)
-        if(res === 200){
-          navigate('/dashboard')
-        }
-        
-      }}>
+      <form onSubmit={submitFormHandler}>
         <div>
           <label htmlFor="select_name">Выберите организацию</label>
           <select value={ProfileState.short_name} onChange={selectChangeHandler} name="select_name" required>

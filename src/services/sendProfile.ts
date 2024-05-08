@@ -15,7 +15,6 @@ export const sendProfile = async(ProfileState:INewProfile) => {
       website: ProfileState.website,
       smp_count: ProfileState.smp_count,
       mmp_count: ProfileState.mmp_count,
-      adress: ProfileState.adress,
       role: ProfileState.role,
     })
     return (await res).status;
