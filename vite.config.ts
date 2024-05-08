@@ -12,6 +12,10 @@ export default defineConfig({
       '/default-names': SERVER,
       '/send-profile': SERVER,
       '/send-adress': SERVER,
+      '/get-hours': SERVER,
+      '/get-programm-type': SERVER,
+      '/get-main-spec': SERVER,
+      '/get-dop-spec': SERVER,
     }
   }
 })
