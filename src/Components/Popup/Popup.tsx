@@ -4,17 +4,18 @@ import { createPortal } from "react-dom";
 import { IHours, getHours } from '../../services/getHours';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
-import { setDescription, setDopSpec, setFullName, setHour, setMainSpec, setProgrammName } from '../../store/popupState';
+import { setDescription, setDopSpec, setFullName, setHour, setMainSpec, setProgrammName, setProgrammType } from '../../store/popupState';
 import { IMainSpec, getMainSpec } from '../../services/getMainSpec';
 import { getDopSpec } from '../../services/getDopSpec';
+import { IProgrammType, getProgrammType } from '../../services/getProgrammType';
 const root_popup = document.getElementById('root_popup')
 
 export function Popup() {
-  const testBl = document.getElementById('test')
   const dispatch = useDispatch<AppDispatch>();
   const [hours,setHours] = useState<IHours[]>([]);
   const [mainSpec,setMainSpecArr] = useState<IMainSpec[]>([]);
   const [dopSpec,setDopSpecArr] = useState<IMainSpec[]>([]);
+  const [programmType,setProgrammTypeRes] = useState<IProgrammType[]>([]);
   const PopupState = useSelector((state: RootState) => state.popup);
   
   useEffect(() => {
@@ -22,9 +23,11 @@ export function Popup() {
       const hoursRes = await getHours()
       const mainSpecRes = await getMainSpec()
       const dopSpec = await getDopSpec()
+      const programmTypeRes = await getProgrammType()
       hoursRes ? setHours(hoursRes) : []
       mainSpecRes ? setMainSpecArr(mainSpecRes) : []
       dopSpec ? setDopSpecArr(dopSpec) : []
+      programmTypeRes ? setProgrammTypeRes(programmTypeRes) : []
     }
 
     fetchData()
@@ -39,11 +42,11 @@ export function Popup() {
   }
 
   const mainSpecHandler = (event: ChangeEvent<HTMLSelectElement>) => {
-    dispatch(setMainSpec(event.target.value))
+    dispatch(setMainSpec(Number(event.target.value)))
   }
 
   const dopSpecHandler = (event: ChangeEvent<HTMLSelectElement>) => {
-    dispatch(setDopSpec(event.target.value))
+    dispatch(setDopSpec(Number(event.target.value)))
   }
 
   const fullNameHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -52,6 +55,10 @@ export function Popup() {
 
   const descriptionHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
     dispatch(setDescription(event.target.value))
+  }
+
+  const programmTypeHandler = (event: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setProgrammType(Number(event.target.value)))
   }
 
   if (!root_popup) {
@@ -101,7 +108,15 @@ export function Popup() {
           <label htmlFor="description"></label>
           <textarea name="description" value={PopupState.description} onChange={descriptionHandler} placeholder='Описание программы' required></textarea>
         </div>
-        <div id='test'></div>
+        <div>
+          <label htmlFor="programmType"></label>
+          <select name="programmType" required defaultValue={''} onChange={programmTypeHandler}>
+            <option value={''} disabled>Выберите тип программы</option>
+            {programmType.length > 0 && programmType.map((spec) => {
+              return <option key={spec.id} value={spec.value}>{spec.type}</option>
+            })}
+          </select>
+        </div>
         <input type="submit" value="Отправить программу" />
       </form>
     </div>,root_popup
