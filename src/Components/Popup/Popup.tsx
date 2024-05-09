@@ -1,5 +1,5 @@
-import { ChangeEvent, useEffect, useState } from 'react';
 import styles from './popup.module.css';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { createPortal } from "react-dom";
 import { IHours, getHours } from '../../services/getHours';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,6 +8,7 @@ import { setDescription, setDopSpec, setFullName, setHour, setMainSpec, setProgr
 import { IMainSpec, getMainSpec } from '../../services/getMainSpec';
 import { getDopSpec } from '../../services/getDopSpec';
 import { IProgrammType, getProgrammType } from '../../services/getProgrammType';
+import { setPopup } from '../../store/dashboardState';
 const root_popup = document.getElementById('root_popup')
 
 export function Popup() {
@@ -17,7 +18,9 @@ export function Popup() {
   const [dopSpec,setDopSpecArr] = useState<IMainSpec[]>([]);
   const [programmType,setProgrammTypeRes] = useState<IProgrammType[]>([]);
   const PopupState = useSelector((state: RootState) => state.popup);
-  
+  const DashboardState = useSelector((state: RootState) => state.dashboard);
+  const popupBlock = document.getElementById('popupBlock');
+
   useEffect(() => {
     const fetchData = async() => {
       const hoursRes = await getHours()
@@ -32,6 +35,19 @@ export function Popup() {
 
     fetchData()
   },[])
+
+  useEffect(() => {
+    const closePopup = (e:MouseEvent) =>{
+      if(popupBlock && e.target === popupBlock){
+        dispatch(setPopup(false))
+      }
+    }
+    document.addEventListener('click',closePopup)
+
+    return () =>{
+      document.removeEventListener('click',closePopup)
+    }
+  },[dispatch, popupBlock])
 
   const hourHandler = (event: ChangeEvent<HTMLSelectElement>) => {
     dispatch(setHour(Number(event.target.value)))
@@ -65,8 +81,8 @@ export function Popup() {
     return <>no poput</>
   }
   return createPortal(
-    <div className={styles.popupBlock}>
-      <form onSubmit={(e) => {
+    <div className={styles.popupBlock} id='popupBlock'>
+      <form className={styles.form} onSubmit={(e) => {
         e.preventDefault()
         console.log('отправка',PopupState)}}>
         <div>
@@ -117,6 +133,7 @@ export function Popup() {
             })}
           </select>
         </div>
+        <span className={styles.closeBtn} onClick={() => dispatch(setPopup(false))}>✕</span>
         <input type="submit" value="Отправить программу" />
       </form>
     </div>,root_popup

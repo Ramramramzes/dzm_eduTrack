@@ -12,8 +12,8 @@ const dashboardSlice = createSlice({
   name: 'dashboard',
   initialState,
   reducers: {
-    setPopup: (state) => {
-      state.popup = !state.popup;
+    setPopup: (state,action) => {
+      state.popup = action.payload;
     }
   }
 })
