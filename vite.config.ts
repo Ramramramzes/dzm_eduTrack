@@ -16,6 +16,7 @@ export default defineConfig({
       '/get-programm-type': SERVER,
       '/get-main-spec': SERVER,
       '/get-dop-spec': SERVER,
+      '/get-programm-adress': SERVER,
     }
   }
 })

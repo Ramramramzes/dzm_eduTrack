@@ -13,6 +13,6 @@ export function Dashboard() {
     <>
       {DashboardState.popup && <Popup />}
       <button onClick={() => {dispatch(setPopup(true))}}>Добавить программу</button>
-    </>
+    </> 
   );
 }
