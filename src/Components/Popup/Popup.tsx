@@ -4,12 +4,13 @@ import { createPortal } from "react-dom";
 import { IHours, getHours } from '../../services/getHours';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
-import { setDopSpec, setFullName, setHour, setMainSpec, setProgrammName } from '../../store/popupState';
+import { setDescription, setDopSpec, setFullName, setHour, setMainSpec, setProgrammName } from '../../store/popupState';
 import { IMainSpec, getMainSpec } from '../../services/getMainSpec';
 import { getDopSpec } from '../../services/getDopSpec';
 const root_popup = document.getElementById('root_popup')
 
 export function Popup() {
+  const testBl = document.getElementById('test')
   const dispatch = useDispatch<AppDispatch>();
   const [hours,setHours] = useState<IHours[]>([]);
   const [mainSpec,setMainSpecArr] = useState<IMainSpec[]>([]);
@@ -47,6 +48,10 @@ export function Popup() {
 
   const fullNameHandler = (event: ChangeEvent<HTMLInputElement>) => {
     dispatch(setFullName(event.target.value))
+  }
+
+  const descriptionHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    dispatch(setDescription(event.target.value))
   }
 
   if (!root_popup) {
@@ -92,7 +97,12 @@ export function Popup() {
           <label htmlFor="fullName"></label>
           <input type="text" name="fullName" value={PopupState.fullName} onChange={fullNameHandler} placeholder='Полное наименование' required/>
         </div>
-        <input type="submit" value="goo" />
+        <div>
+          <label htmlFor="description"></label>
+          <textarea name="description" value={PopupState.description} onChange={descriptionHandler} placeholder='Описание программы' required></textarea>
+        </div>
+        <div id='test'></div>
+        <input type="submit" value="Отправить программу" />
       </form>
     </div>,root_popup
   );
