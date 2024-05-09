@@ -4,7 +4,7 @@ import { createPortal } from "react-dom";
 import { IHours, getHours } from '../../services/getHours';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
-import { setHour } from '../../store/popupState';
+import { setHour, setProgrammName } from '../../store/popupState';
 const root_popup = document.getElementById('root_popup')
 
 export function Popup() {
@@ -24,6 +24,10 @@ export function Popup() {
   const hourHandler = (event: ChangeEvent<HTMLSelectElement>) => {
     dispatch(setHour(Number(event.target.value)))
   }
+  
+  const nameHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    dispatch(setProgrammName(event.target.value))
+  }
 
   if (!root_popup) {
     return <>no poput</>
@@ -41,6 +45,10 @@ export function Popup() {
               return <option key={hour.id} value={hour.hours_value}>{hour.hours_value}</option>
             })}
           </select>
+        </div>
+        <div>
+          <label htmlFor="programmName"></label>
+          <input type="text" name="programmName" value={PopupState.programmName} onChange={nameHandler}/>
         </div>
         <input type="submit" value="goo" />
       </form>
