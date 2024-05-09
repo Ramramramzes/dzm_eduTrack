@@ -4,22 +4,26 @@ import { createPortal } from "react-dom";
 import { IHours, getHours } from '../../services/getHours';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
-import { setHour, setMainSpec, setProgrammName } from '../../store/popupState';
+import { setDopSpec, setHour, setMainSpec, setProgrammName } from '../../store/popupState';
 import { IMainSpec, getMainSpec } from '../../services/getMainSpec';
+import { getDopSpec } from '../../services/getDopSpec';
 const root_popup = document.getElementById('root_popup')
 
 export function Popup() {
   const dispatch = useDispatch<AppDispatch>();
   const [hours,setHours] = useState<IHours[]>([]);
   const [mainSpec,setMainSpecArr] = useState<IMainSpec[]>([]);
+  const [dopSpec,setDopSpecArr] = useState<IMainSpec[]>([]);
   const PopupState = useSelector((state: RootState) => state.popup);
   
   useEffect(() => {
     const fetchData = async() => {
       const hoursRes = await getHours()
       const mainSpecRes = await getMainSpec()
+      const dopSpec = await getDopSpec()
       hoursRes ? setHours(hoursRes) : []
       mainSpecRes ? setMainSpecArr(mainSpecRes) : []
+      dopSpec ? setDopSpecArr(dopSpec) : []
     }
 
     fetchData()
@@ -35,6 +39,10 @@ export function Popup() {
 
   const mainSpecHandler = (event: ChangeEvent<HTMLSelectElement>) => {
     dispatch(setMainSpec(event.target.value))
+  }
+
+  const dopSpecHandler = (event: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setDopSpec(event.target.value))
   }
 
   if (!root_popup) {
@@ -66,7 +74,15 @@ export function Popup() {
               return <option key={spec.id} value={spec.value}>{spec.name}</option>
             })}
           </select>
-          {/* main_spec && dop_spec */}
+        </div>
+        <div>
+          <label htmlFor="dopSpec"></label>
+          <select name="dopSpec" defaultValue={''} onChange={dopSpecHandler}>
+            <option value={''} disabled>Выберите доп специальность</option>
+            {dopSpec.length > 0 && dopSpec.map((spec) => {
+              return <option key={spec.id} value={spec.value}>{spec.name}</option>
+            })}
+          </select>
         </div>
         <input type="submit" value="goo" />
       </form>

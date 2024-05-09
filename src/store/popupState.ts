@@ -4,12 +4,14 @@ interface IPopup{
   hours: number;
   programmName: string;
   mainSpec: number;
+  dopSpec: number;
 }
 
 const initialState: IPopup = {
   hours: 0,
   programmName: '',
   mainSpec: 0,
+  dopSpec: 0,
 }
 
 const popupSlice = createSlice({
@@ -24,10 +26,13 @@ const popupSlice = createSlice({
     },
     setMainSpec: (state, action) => {
       state.mainSpec = action.payload
+    },
+    setDopSpec: (state, action) => {
+      state.dopSpec = action.payload
     }
 
   }
 })
 
-export const {setHour, setProgrammName, setMainSpec, } = popupSlice.actions
+export const {setHour, setProgrammName, setMainSpec, setDopSpec } = popupSlice.actions
 export default popupSlice.reducer
