@@ -124,6 +124,21 @@ app.get('/get-hours', (req, res) => {
   });
 })
 
+app.get('/get-main-spec', (req, res) => {
+  const sql = `SELECT * FROM \`main_spec\` WHERE 1`
+
+  connection.query(sql,(error, results) => {
+    if (error) {
+      res.status(500).json({ error: 'Ошибка при выполнении запроса к базе данных' });
+      console.log(error.code, error.message);
+    } else {
+      res.send(results);
+    }
+  });
+})
+
+
+
 // '/get-programm-type'
 // '/get-main-spec'
 // '/get-dop-spec'

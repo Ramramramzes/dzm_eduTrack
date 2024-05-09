@@ -4,18 +4,22 @@ import { createPortal } from "react-dom";
 import { IHours, getHours } from '../../services/getHours';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
-import { setHour, setProgrammName } from '../../store/popupState';
+import { setHour, setMainSpec, setProgrammName } from '../../store/popupState';
+import { IMainSpec, getMainSpec } from '../../services/getMainSpec';
 const root_popup = document.getElementById('root_popup')
 
 export function Popup() {
   const dispatch = useDispatch<AppDispatch>();
   const [hours,setHours] = useState<IHours[]>([]);
+  const [mainSpec,setMainSpecArr] = useState<IMainSpec[]>([]);
   const PopupState = useSelector((state: RootState) => state.popup);
   
   useEffect(() => {
     const fetchData = async() => {
-      const res = await getHours()
-      res ? setHours(res) : []
+      const hoursRes = await getHours()
+      const mainSpecRes = await getMainSpec()
+      hoursRes ? setHours(hoursRes) : []
+      mainSpecRes ? setMainSpecArr(mainSpecRes) : []
     }
 
     fetchData()
@@ -29,6 +33,10 @@ export function Popup() {
     dispatch(setProgrammName(event.target.value))
   }
 
+  const mainSpecHandler = (event: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setMainSpec(event.target.value))
+  }
+
   if (!root_popup) {
     return <>no poput</>
   }
@@ -36,7 +44,11 @@ export function Popup() {
     <div className={styles.popupBlock}>
       <form onSubmit={(e) => {
         e.preventDefault()
-        console.log('отправка',PopupState.hours)}}>
+        console.log('отправка',PopupState)}}>
+        <div>
+          <label htmlFor="programmName"></label>
+          <input type="text" name="programmName" value={PopupState.programmName} onChange={nameHandler} placeholder='Название программы' required/>
+        </div>
         <div>
           <label htmlFor="hours"></label>
           <select name="hours" required defaultValue={''} onChange={hourHandler}>
@@ -47,8 +59,14 @@ export function Popup() {
           </select>
         </div>
         <div>
-          <label htmlFor="programmName"></label>
-          <input type="text" name="programmName" value={PopupState.programmName} onChange={nameHandler}/>
+          <label htmlFor="mainSpec"></label>
+          <select name="mainSpec" required defaultValue={''} onChange={mainSpecHandler}>
+            <option value={''} disabled>Выберите основную специальность</option>
+            {mainSpec.length > 0 && mainSpec.map((spec) => {
+              return <option key={spec.id} value={spec.value}>{spec.name}</option>
+            })}
+          </select>
+          {/* main_spec && dop_spec */}
         </div>
         <input type="submit" value="goo" />
       </form>
