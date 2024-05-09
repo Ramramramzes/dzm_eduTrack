@@ -4,7 +4,7 @@ import { createPortal } from "react-dom";
 import { IHours, getHours } from '../../services/getHours';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
-import { setDopSpec, setHour, setMainSpec, setProgrammName } from '../../store/popupState';
+import { setDopSpec, setFullName, setHour, setMainSpec, setProgrammName } from '../../store/popupState';
 import { IMainSpec, getMainSpec } from '../../services/getMainSpec';
 import { getDopSpec } from '../../services/getDopSpec';
 const root_popup = document.getElementById('root_popup')
@@ -45,6 +45,10 @@ export function Popup() {
     dispatch(setDopSpec(event.target.value))
   }
 
+  const fullNameHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    dispatch(setFullName(event.target.value))
+  }
+
   if (!root_popup) {
     return <>no poput</>
   }
@@ -83,6 +87,10 @@ export function Popup() {
               return <option key={spec.id} value={spec.value}>{spec.name}</option>
             })}
           </select>
+        </div>
+        <div>
+          <label htmlFor="fullName"></label>
+          <input type="text" name="fullName" value={PopupState.fullName} onChange={fullNameHandler} placeholder='Полное наименование' required/>
         </div>
         <input type="submit" value="goo" />
       </form>
