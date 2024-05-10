@@ -1,46 +1,21 @@
 import styles from './popup.module.css';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect } from 'react';
 import { createPortal } from "react-dom";
-import { IHours, getHours } from '../../services/getHours';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { setDescription, setDopSpec, setFullName, setHour, setMainSpec, setProgrammAdress, setProgrammName, setProgrammType } from '../../store/popupState';
-import { IMainSpec, getMainSpec } from '../../services/getMainSpec';
-import { getDopSpec } from '../../services/getDopSpec';
-import { IProgrammType, getProgrammType } from '../../services/getProgrammType';
 import { setPopup } from '../../store/dashboardState';
-import { IProgrammAdress, getAdress } from '../../services/getAdress';
 import { sendProgramm } from '../../services/sendProgramm';
 import { getOrgId } from '../../services/getOrgId';
 const root_popup = document.getElementById('root_popup')
 
 export function Popup() {
   const dispatch = useDispatch<AppDispatch>();
-  const [hours,setHours] = useState<IHours[]>([]);
-  const [mainSpec,setMainSpecArr] = useState<IMainSpec[]>([]);
-  const [dopSpec,setDopSpecArr] = useState<IMainSpec[]>([]);
-  const [programmType,setProgrammTypeRes] = useState<IProgrammType[]>([]);
-  const [adress,setAdressRes] = useState<IProgrammAdress[]>([])
   const PopupState = useSelector((state: RootState) => state.popup);
   const UserState = useSelector((state: RootState) => state.user);
+  const DefaultState = useSelector((state: RootState) => state.default);
   const popupBlock = document.getElementById('popupBlock');
 
-  useEffect(() => {
-    const fetchData = async() => {
-      const hoursRes = await getHours()
-      const mainSpecRes = await getMainSpec()
-      const dopSpec = await getDopSpec()
-      const programmTypeRes = await getProgrammType()
-      const adress = await getAdress(UserState.id)
-      hoursRes ? setHours(hoursRes) : []
-      mainSpecRes ? setMainSpecArr(mainSpecRes) : []
-      dopSpec ? setDopSpecArr(dopSpec) : []
-      programmTypeRes ? setProgrammTypeRes(programmTypeRes) : []
-      adress? setAdressRes(adress) : []
-    }
-
-    fetchData()
-  },[UserState.id])
 
   useEffect(() => {
     const closePopup = (e:MouseEvent) =>{
@@ -113,7 +88,7 @@ export function Popup() {
           <label htmlFor="hours"></label>
           <select name="hours" required defaultValue={''} onChange={hourHandler}>
             <option value={''} disabled>Выберите часы</option>
-            {hours.length > 0 && hours.map((hour) => {
+            {DefaultState.hours.length > 0 && DefaultState.hours.map((hour) => {
               return <option key={hour.id} value={hour.hours_value}>{hour.hours_value}</option>
             })}
           </select>
@@ -122,7 +97,7 @@ export function Popup() {
           <label htmlFor="mainSpec"></label>
           <select name="mainSpec" required defaultValue={''} onChange={mainSpecHandler}>
             <option value={''} disabled>Выберите основную специальность</option>
-            {mainSpec.length > 0 && mainSpec.map((spec) => {
+            {DefaultState.mainSpec.length > 0 && DefaultState.mainSpec.map((spec) => {
               return <option key={spec.id} value={spec.value}>{spec.name}</option>
             })}
           </select>
@@ -131,7 +106,7 @@ export function Popup() {
           <label htmlFor="dopSpec"></label>
           <select name="dopSpec" defaultValue={''} onChange={dopSpecHandler}>
             <option value={''} disabled>Выберите доп специальность</option>
-            {dopSpec.length > 0 && dopSpec.map((spec) => {
+            {DefaultState.dopSpec.length > 0 && DefaultState.dopSpec.map((spec) => {
               return <option key={spec.id} value={spec.value}>{spec.name}</option>
             })}
           </select>
@@ -148,7 +123,7 @@ export function Popup() {
           <label htmlFor="programmType"></label>
           <select name="programmType" required defaultValue={''} onChange={programmTypeHandler}>
             <option value={''} disabled>Выберите тип программы</option>
-            {programmType.length > 0 && programmType.map((spec) => {
+            {DefaultState.programmType.length > 0 && DefaultState.programmType.map((spec) => {
               return <option key={spec.id} value={spec.value}>{spec.type}</option>
             })}
           </select>
@@ -157,7 +132,7 @@ export function Popup() {
           <label htmlFor="adress"></label>
           <select name="adress" required defaultValue={''} onChange={adressHandler}>
             <option value={''} disabled>Выберите адрес</option>
-            {adress.length > 0 && adress.map((adr) => {
+            {DefaultState.adress.length > 0 && DefaultState.adress.map((adr) => {
               return <option key={adr.adress_id} value={adr.adress}>{adr.adress}</option>
             })}
           </select>

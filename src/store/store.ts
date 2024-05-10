@@ -4,6 +4,7 @@ import userReducer from './userState'
 import newProfileReducer from './createProfileState'
 import dashboardReducer from './dashboardState'
 import popupReducer from './popupState'
+import defaultReducer from './defaultDataState'
 
 const rootReducer = combineReducers({
   login: loginReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   newProfile: newProfileReducer,
   dashboard: dashboardReducer, 
   popup: popupReducer,
+  default: defaultReducer,
 })
 
 const store = configureStore({
