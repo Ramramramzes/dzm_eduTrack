@@ -8,6 +8,7 @@ import { Provider } from 'react-redux'
 import store from './store/store.ts'
 import { Dashboard } from './pages/Dashboard/Dashboard.tsx'
 import { FillProfile } from './pages/FillProfile/FillProfile.tsx'
+import { Programm } from './pages/Programm/Programm.tsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -15,6 +16,7 @@ const router = createBrowserRouter(
       <Route path="/" element={<App />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/reg-profile" element={<FillProfile />} />
+      <Route path="/programm" element={<Programm />} />
     </>
   )
 )

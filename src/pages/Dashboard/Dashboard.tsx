@@ -5,7 +5,7 @@ import { AppDispatch, RootState } from "../../store/store";
 import { setPopup } from "../../store/dashboardState";
 import { GetPrograms } from "../../hooks/getPrograms";
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export function Dashboard() {
   const dispatch = useDispatch<AppDispatch>();
@@ -25,9 +25,9 @@ export function Dashboard() {
     <>
       <div className={styles.cardsBlock}>
         {programms && programms.map((programm) => {
-          return  <div className={styles.card} key={programm.programm_id}>
+          return  <Link to={'/programm'} className={styles.card} key={programm.programm_id}>
                     <h3>{programm.name}</h3>
-                  </div>
+                  </Link>
         })}
       </div>
       {DashboardState.popup && <Popup />}

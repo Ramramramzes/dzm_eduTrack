@@ -3,8 +3,10 @@
   flex-wrap: wrap;
   width: 100%;
   justify-content: space-around;
+  gap: 5%;
 }
 .card{
   border: 1px solid #000;
   width: 20%;
+  cursor: pointer;
 }

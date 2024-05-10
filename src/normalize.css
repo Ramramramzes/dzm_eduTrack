@@ -70,3 +70,12 @@ textarea:not([rows]) {
 :target {
   scroll-margin-block: 5ex;
 }
+
+a{
+  color: inherit;
+  text-decoration: none;
+}
+
+a:visited{
+  color: inherit;
+}
