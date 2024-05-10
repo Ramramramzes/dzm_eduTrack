@@ -37,7 +37,6 @@ export function Popup() {
       dopSpec ? setDopSpecArr(dopSpec) : []
       programmTypeRes ? setProgrammTypeRes(programmTypeRes) : []
       adress? setAdressRes(adress) : []
-      
     }
 
     fetchData()
