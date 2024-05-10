@@ -176,6 +176,45 @@ app.get('/get-programm-adress', (req, res) => {
   });
 })
 
+app.get('/get-orgid', (req, res) => {
+  const sql = `SELECT * FROM \`profile\` WHERE \`user_id\` = ?`;
+
+  connection.query(sql,[req.query.user_id],(error, results) => {
+    if (error) {
+      res.status(500).json({ error: 'Ошибка при выполнении запроса к базе данных' });
+      console.log(error.code, error.message);
+    } else {
+      res.send(results);
+    }
+  });
+})
+
+app.post('/send-programm', (req, res) => {
+  const { programm, org_id } = req.body;
+  const sql = `INSERT INTO \`programm\`(\`name\`, \`hours\`, \`spec_main\`, \`spec_dop\`, \`full_name\`, \`short_content\`, \`programm_type\`, \`adress\`, \`org_id\`, \`status\`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  const params = [
+    programm.programmName,
+    programm.hours,
+    programm.mainSpec,
+    programm.dopSpec,
+    programm.fullName,
+    programm.description,
+    programm.programmType,
+    programm.adress,
+    Number(org_id),
+    programm.status
+  ];
+
+  connection.query(sql, params, (error, results) => {
+    if (error) {
+      res.status(500).json({ error: 'Ошибка при выполнении запроса к базе данных' });
+      console.log(error.code, error.message);
+    } else {
+      res.send(results);
+    }
+  });
+});
+
 
 
 app.listen(port, () => {

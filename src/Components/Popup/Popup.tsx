@@ -10,6 +10,8 @@ import { getDopSpec } from '../../services/getDopSpec';
 import { IProgrammType, getProgrammType } from '../../services/getProgrammType';
 import { setPopup } from '../../store/dashboardState';
 import { IProgrammAdress, getAdress } from '../../services/getAdress';
+import { sendProgramm } from '../../services/sendProgramm';
+import { getOrgId } from '../../services/getOrgId';
 const root_popup = document.getElementById('root_popup')
 
 export function Popup() {
@@ -91,9 +93,19 @@ export function Popup() {
   }
   return createPortal(
     <div className={styles.popupBlock} id='popupBlock'>
-      <form className={styles.form} onSubmit={(e) => {
+      <form className={styles.form} onSubmit={async(e) => {
         e.preventDefault()
-        console.log('отправка',PopupState)}}>
+        const orgIdForReq = await getOrgId(UserState.id)
+        await sendProgramm(PopupState,orgIdForReq)
+        dispatch(setPopup(false))
+        dispatch(setHour(0))
+        dispatch(setProgrammName(''))
+        dispatch(setMainSpec(0))
+        dispatch(setDopSpec(0))
+        dispatch(setFullName(''))
+        dispatch(setDescription(''))
+        dispatch(setProgrammType(0))
+      }}>
         <div>
           <label htmlFor="programmName"></label>
           <input type="text" name="programmName" value={PopupState.programmName} onChange={nameHandler} placeholder='Название программы' required/>

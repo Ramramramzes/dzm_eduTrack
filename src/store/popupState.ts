@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { IProgrammAdress } from "../services/getAdress";
 
-interface IPopup{
+export interface IPopup{
   hours: number;
   programmName: string;
   mainSpec: number;
@@ -10,6 +10,7 @@ interface IPopup{
   description: string;
   programmType: number;
   adress: IProgrammAdress[];
+  status: number;
 }
 
 const initialState: IPopup = {
@@ -21,6 +22,7 @@ const initialState: IPopup = {
   description: '',
   programmType: 0,
   adress: [],
+  status: 100,
 }
 
 const popupSlice = createSlice({

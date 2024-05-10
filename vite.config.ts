@@ -17,6 +17,8 @@ export default defineConfig({
       '/get-main-spec': SERVER,
       '/get-dop-spec': SERVER,
       '/get-programm-adress': SERVER,
+      '/send-programm': SERVER,
+      '/get-orgid': SERVER,
     }
   }
 })
