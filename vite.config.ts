@@ -19,6 +19,7 @@ export default defineConfig({
       '/get-programm-adress': SERVER,
       '/send-programm': SERVER,
       '/get-orgid': SERVER,
+      '/get-programs': SERVER,
     }
   }
 })
