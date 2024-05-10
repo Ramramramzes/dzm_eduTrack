@@ -215,6 +215,20 @@ app.post('/send-programm', (req, res) => {
   });
 });
 
+app.get('/get-programs', (req, res) => {
+  const sql = `SELECT \`programm_id\`, \`name\`, \`hours\`, \`spec_main\`, \`spec_dop\`, \`full_name\`, \`short_content\`, \`programm_type\`, \`adress\`, \`org_id\`, \`status\` FROM \`programm\` WHERE \`org_id\` = ?`;
+
+  connection.query(sql,[req.query.org_id],(error, results) => {
+    if (error) {
+      res.status(500).json({ error: 'Ошибка при выполнении запроса к базе данных' });
+      console.log(error.code, error.message);
+    } else {
+      res.send(results);
+    }
+  });
+})
+
+
 
 
 app.listen(port, () => {

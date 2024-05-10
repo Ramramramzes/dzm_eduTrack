@@ -32,6 +32,8 @@ export function Login() {
       dispatch(setPassword(''))
       const isCreated = await checkProfileData(res[0].id)
       if(isCreated != 0){
+        const defaultData = await getDefaultData(res[0].id)
+        dispatch(setDefaultData(defaultData))
         dispatch(setId(res[0].id))
         navigation('/dashboard')
       }else{
