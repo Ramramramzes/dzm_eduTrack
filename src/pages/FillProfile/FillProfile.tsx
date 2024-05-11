@@ -9,6 +9,8 @@ import { Adress } from "../../Components/Adress";
 import { sendProfile } from "../../services/sendProfile";
 import { useNavigate } from "react-router-dom";
 import { sendAdress } from "../../services/sendAdress";
+import { setDefAdress } from "../../store/defaultDataState";
+import { IProgrammAdress } from "../../services/getAdress";
 
 export function FillProfile() {
   const item = useSelector((state: RootState) => state.login.defaultData[0]);
@@ -73,6 +75,15 @@ export function FillProfile() {
       res ? adressStatus = res : false
       res != 200 ? alert('Ошибка отправки адреса'): false;
     })
+    const adressForDef:IProgrammAdress[] = []
+    ProfileState.adress.map((adress) => {
+      adressForDef.push({
+        adress_id: adress.id,
+        profile_id: ProfileState.user_id,
+        adress: adress.value,
+      })
+    })
+    dispatch(setDefAdress(adressForDef))
     if(resSendProfile === 200 && adressStatus === 200){
       navigate('/dashboard')
     }

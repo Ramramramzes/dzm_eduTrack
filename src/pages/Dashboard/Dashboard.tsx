@@ -8,8 +8,8 @@ import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { IMainSpec } from '../../services/getMainSpec';
 import { backStatus, roundColor } from '../../style/_dashboard';
-import { setAdress } from '../../store/defaultDataState';
 import { getAdress } from '../../services/getAdress';
+import { setDefAdress } from '../../store/defaultDataState';
 
 export function Dashboard() {
   const dispatch = useDispatch<AppDispatch>();
@@ -17,20 +17,23 @@ export function Dashboard() {
   const LoginState = useSelector((state: RootState) => state.login);
   const UserState = useSelector((state: RootState) => state.user);
   const DefaultData = useSelector((state: RootState) => state.default);
+  const ProfileState = useSelector((state: RootState) => state.newProfile);
 
   const navigate = useNavigate();
   const orgId = LoginState.defaultData?.[0]?.org_id ? LoginState.defaultData[0].org_id : 0
   const programms =  GetPrograms(orgId)
 
-
+  
   useEffect(() => {
     const fetchData = async () => {
       const adress = await getAdress(UserState.id)
-      dispatch(setAdress(adress))
+      dispatch(setDefAdress(adress))
     }
 
-    fetchData()
-  },[UserState.id, dispatch])
+    if(ProfileState.user_id === 0){
+      fetchData()
+    }
+  },[UserState.id, dispatch, DashboardState.popup, ProfileState.user_id])
 
   useEffect(() => {
     if(orgId === 0){

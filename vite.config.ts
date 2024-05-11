@@ -20,6 +20,7 @@ export default defineConfig({
       '/send-programm': SERVER,
       '/get-orgid': SERVER,
       '/get-programs': SERVER,
+      '/get-profile': SERVER,
     }
   }
 })

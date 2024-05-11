@@ -25,11 +25,11 @@ const defaultDataSlice = createSlice({
   name: "defaultData",
   initialState,
   reducers: {
-    setAdress: (state,action) => {
+    setDefAdress: (state,action) => {
       state.adress = action.payload
     }
   }
 })
 
-export const {setAdress} = defaultDataSlice.actions
+export const {setDefAdress} = defaultDataSlice.actions
 export default defaultDataSlice.reducer

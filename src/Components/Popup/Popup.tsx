@@ -24,7 +24,7 @@ export function Popup() {
       }
     }
     document.addEventListener('click',closePopup)
-
+    
     return () =>{
       document.removeEventListener('click',closePopup)
     }
