@@ -241,6 +241,19 @@ app.get('/get-profile', (req, res) => {
   });
 })
 
+app.get('/get-programm', (req, res) => {
+  const sql = `SELECT * FROM \`programm\` WHERE \`programm_id\` = ?`;
+
+  connection.query(sql,[req.query.programm_id],(error, results) => {
+    if (error) {
+      res.status(500).json({ error: 'Ошибка при выполнении запроса к базе данных' });
+      console.log(error.code, error.message);
+    } else {
+      res.send(results);
+    }
+  });
+})
+
 
 app.listen(port, () => {
   console.log(`Запущен на ${port} порту`);

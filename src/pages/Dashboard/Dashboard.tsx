@@ -34,8 +34,6 @@ export function Dashboard() {
     const fetchData = async() =>{
       const profile = await getProfile(UserState.id)
       dispatch(setProfile(profile))
-      console.log(UserState);
-    
     }
 
     fetchData()
@@ -58,7 +56,7 @@ export function Dashboard() {
       <h1>Программы {UserState && UserState.profile && UserState.profile.short_name}</h1>
       <div className={styles.cardsBlock}>
         {programms && programms.map((programm) => {
-          return  <Link to={'/programm'} className={styles.card} key={programm.programm_id}>
+          return  <Link to='/programm' state={programm.programm_id} className={styles.card} key={programm.programm_id}>
                     <h3>{programm.name}</h3>
                     <p>Время обучения {programm.hours} ч.</p>
                     <div>
