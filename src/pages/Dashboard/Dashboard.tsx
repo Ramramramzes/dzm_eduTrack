@@ -10,6 +10,8 @@ import { IMainSpec } from '../../services/getMainSpec';
 import { backStatus, roundColor } from '../../style/_dashboard';
 import { getAdress } from '../../services/getAdress';
 import { setDefAdress } from '../../store/defaultDataState';
+import { getProfile } from '../../services/getProfile';
+import { setProfile } from '../../store/userState';
 
 export function Dashboard() {
   const dispatch = useDispatch<AppDispatch>();
@@ -22,7 +24,22 @@ export function Dashboard() {
   const navigate = useNavigate();
   const orgId = LoginState.defaultData?.[0]?.org_id ? LoginState.defaultData[0].org_id : 0
   const programms =  GetPrograms(orgId)
+  useEffect(() => {
+    if(orgId === 0){
+      navigate('/')
+    }
+  },[navigate, orgId])
 
+  useEffect(() => {
+    const fetchData = async() =>{
+      const profile = await getProfile(UserState.id)
+      dispatch(setProfile(profile))
+      console.log(UserState);
+    
+    }
+
+    fetchData()
+  },[])
   
   useEffect(() => {
     const fetchData = async () => {
@@ -35,25 +52,19 @@ export function Dashboard() {
     }
   },[UserState.id, dispatch, DashboardState.popup, ProfileState.user_id])
 
-  useEffect(() => {
-    if(orgId === 0){
-      navigate('/')
-    }
-  },[navigate, orgId])
 
   return (
     <>
-      <h1>Программы </h1>
+      <h1>Программы {UserState && UserState.profile && UserState.profile.short_name}</h1>
       <div className={styles.cardsBlock}>
         {programms && programms.map((programm) => {
           return  <Link to={'/programm'} className={styles.card} key={programm.programm_id}>
                     <h3>{programm.name}</h3>
                     <p>Время обучения {programm.hours} ч.</p>
                     <div>
-                      <p>Основная специальность:</p>
-                      <p>{DefaultData.mainSpec.map((main:IMainSpec) => {
-                      return main.value === programm.spec_main ? main.name : ''
-                    })}</p>
+                      <p>Основная специальность: {DefaultData.mainSpec.map((main:IMainSpec) => {
+                                                    return main.value === programm.spec_main ? main.name : ''
+                                                  })}</p>
                     <div className={styles.statusBlock} style={backStatus(programm.status === 200 ? '#00FF00' : programm.status === 100 ? '#FFFF00' : '#FF0000')}>
                       {programm.status === 200 ? 'Программа активна' : programm.status === 100 ? 'Программа в обработке' : 'Программа требует исправления'}
                       <div className={styles.neon} style={roundColor(programm.status === 200 ? '#00FF00' : programm.status === 100 ? '#FFFF00' : '#FF0000')}></div>

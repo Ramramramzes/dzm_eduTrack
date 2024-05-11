@@ -38,6 +38,7 @@ export function Login() {
         navigation('/dashboard')
       }else{
         const defaultData = await getDefaultData(res[0].id)
+        dispatch(setId(res[0].id))
         dispatch(setDefaultData(defaultData))
         navigation('/reg-profile')
       }
