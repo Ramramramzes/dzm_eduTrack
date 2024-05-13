@@ -254,6 +254,19 @@ app.get('/get-programm', (req, res) => {
   });
 })
 
+app.get('/get-org-name', (req, res) => {
+  const sql = `SELECT \`short_name\` FROM \`profile\` WHERE \`org_id\` = ?`;
+
+  connection.query(sql,[req.query.org_id],(error, results) => {
+    if (error) {
+      res.status(500).json({ error: 'Ошибка при выполнении запроса к базе данных' });
+      console.log(error.code, error.message);
+    } else {
+      res.send(results);
+    }
+  });
+})
+
 
 app.listen(port, () => {
   console.log(`Запущен на ${port} порту`);

@@ -7,9 +7,10 @@ import { Login } from '../Login';
 
 export function Dashboard() {
   const LoginState = useSelector((state: RootState) => state.login);
+
   return (
     <>
-      {LoginState.defaultData[0]?.role === 'ОО' ? <Dashboard_oo /> : LoginState.defaultData[0]?.role === 'МО' ? <Dashboard_mo /> : <Login />}
+      {LoginState.defaultData[0]?.role === 'ОО' ? <Dashboard_oo /> : LoginState.defaultData[0]?.role.toLocaleLowerCase() === 'МО'.toLocaleLowerCase() ? <Dashboard_mo /> : <Login />}
     </> 
   );
 }

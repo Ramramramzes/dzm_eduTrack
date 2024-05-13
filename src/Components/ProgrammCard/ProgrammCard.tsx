@@ -5,12 +5,29 @@ import { useSelector } from 'react-redux';
 import { IMainSpec } from '../../services/getMainSpec';
 import { backStatus, roundColor } from '../../style/_dashboard';
 import { Link } from'react-router-dom';
+import { getOrgName } from '../../services/getOrgName';
+import { useEffect, useState } from 'react';
 
-export function ProgrammCard({ programm }: {programm :IProgramms}) {
+export function ProgrammCard({ programm,orgId}: {programm :IProgramms, orgId : number, key: number}) {
+  // const dispatch = useDispatch<AppDispatch>();
   const DefaultData = useSelector((state: RootState) => state.default);
+  const LoginState = useSelector((state: RootState) => state.login);
+  const [orgName, setOrgName] =useState('')
+
+  useEffect(() => {
+    const fetchData = async() =>{
+      const res = await getOrgName(Number(orgId))
+      setOrgName(res)
+    }
+
+    fetchData()
+    
+  },[])
+  
   return (
-    <Link to='/programm' state={programm.programm_id} className={styles.card} key={programm.programm_id}>
+    <Link to='/programm' state={programm.programm_id} className={styles.card}>
                     <h3>{programm.name}</h3>
+                    {LoginState.defaultData[0]?.role === 'МО' && typeof orgName === 'string'? <p key={programm.programm_id}>{orgName}</p> : <></>}
                     <p>Время обучения {programm.hours} ч.</p>
                     <div>
                       <p>Основная специальность: {DefaultData.mainSpec.map((main:IMainSpec) => {

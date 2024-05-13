@@ -22,6 +22,7 @@ export default defineConfig({
       '/get-programs': SERVER,
       '/get-profile': SERVER,
       '/get-programm': SERVER,
+      '/get-org-name': SERVER,
     }
   }
 })

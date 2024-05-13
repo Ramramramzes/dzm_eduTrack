@@ -16,7 +16,6 @@ export function Programm() {
 useEffect(() => {
   const fetchData = async() => {
     const res = await getProgramm(programmId)
-    console.log(res);
     dispatch(setProgramm(res))
   }
   fetchData()

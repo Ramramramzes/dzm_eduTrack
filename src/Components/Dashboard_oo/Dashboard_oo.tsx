@@ -56,7 +56,7 @@ export function Dashboard_oo() {
       <h1>Программы {UserState && UserState.profile && UserState.profile.short_name}</h1>
       <div className={styles.cardsBlock}>
         {programms && programms.map((programm) => {
-          return  <ProgrammCard programm={programm} />
+          return  <ProgrammCard key={programm.programm_id} programm={programm} orgId={orgId} />
         })}
       </div>
       {DashboardState.popup && <Popup />}
