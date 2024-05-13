@@ -6,6 +6,7 @@ import dashboardReducer from './dashboardState'
 import popupReducer from './popupState'
 import defaultReducer from './defaultDataState'
 import programmPageReducer from './programmState'
+import studentsReducer from './createStudents'
 
 const rootReducer = combineReducers({
   login: loginReducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   popup: popupReducer,
   default: defaultReducer,
   programmPage: programmPageReducer,
+  students: studentsReducer,
 })
 
 const store = configureStore({

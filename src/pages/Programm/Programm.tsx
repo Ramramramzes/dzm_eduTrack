@@ -1,7 +1,7 @@
 // import styles from './programm.module.css';
 
 import { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AppDispatch, RootState } from "../../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { getProgramm } from "../../services/getProgramm";
@@ -11,6 +11,7 @@ export function Programm() {
   const dispatch = useDispatch<AppDispatch>();
   const ProgrammState = useSelector((state: RootState) => state.programmPage.programm);
   const location = useLocation();
+  const navigate = useNavigate()
   const programmId = location.state;
   
 useEffect(() => {
@@ -21,10 +22,12 @@ useEffect(() => {
   fetchData()
 },[])
 
-  const navigate = useNavigate()
   return (
     <>
-      <h1>{ProgrammState.full_name}</h1>
+      <div>
+        <h1>{ProgrammState.full_name}</h1>
+        <Link to={'/students'}>Записать сотрудников</Link>
+      </div>
       <div>
         <p>Колл-во часов: {ProgrammState.hours}</p>
         <p>Основная специальность: {ProgrammState.spec_main}</p>
