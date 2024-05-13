@@ -1,9 +1,7 @@
 import styles from './dashboard_mo.module.css';
-import { GetPrograms } from '../../hooks/getPrograms';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { useNavigate } from 'react-router-dom';
-import { setPopup } from '../../store/dashboardState';
 import { Popup } from '../Popup';
 import { useEffect } from 'react';
 import { getProfile } from '../../services/getProfile';
@@ -11,6 +9,7 @@ import { setProfile } from '../../store/userState';
 import { getAdress } from '../../services/getAdress';
 import { setDefAdress } from '../../store/defaultDataState';
 import { ProgrammCard } from '../ProgrammCard';
+import { GetAvailablePrograms} from '../../hooks/getAvailableProgramms';
 
 export function Dashboard_mo() {
   const dispatch = useDispatch<AppDispatch>();
@@ -21,8 +20,7 @@ export function Dashboard_mo() {
   const navigate = useNavigate();
 
   const orgId = LoginState.defaultData?.[0]?.org_id ? LoginState.defaultData[0].org_id : 0
-  //! заменить на getAllAvailableProgramms
-  const programms =  GetPrograms(orgId)
+  const programms =  GetAvailablePrograms()
 
   
   useEffect(() => {
@@ -57,11 +55,10 @@ export function Dashboard_mo() {
       <h1>Образовательные программы</h1>
       <div className={styles.cardsBlock}>
         {programms && programms.map((programm) => {
-          return  programm.status != 500 ? <ProgrammCard key={programm.programm_id} programm={programm} orgId={orgId} /> : <></>
+          return  <ProgrammCard key={programm.programm_id} programm={programm} orgId={programm.org_id} />
         })}
       </div>
       {DashboardState.popup && <Popup />}
-      <button onClick={() => {dispatch(setPopup(true))}}>Добавить программу</button>
     </>
   );
 }

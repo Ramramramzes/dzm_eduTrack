@@ -9,7 +9,6 @@ import { getOrgName } from '../../services/getOrgName';
 import { useEffect, useState } from 'react';
 
 export function ProgrammCard({ programm,orgId}: {programm :IProgramms, orgId : number, key: number}) {
-  // const dispatch = useDispatch<AppDispatch>();
   const DefaultData = useSelector((state: RootState) => state.default);
   const LoginState = useSelector((state: RootState) => state.login);
   const [orgName, setOrgName] =useState('')
@@ -17,7 +16,7 @@ export function ProgrammCard({ programm,orgId}: {programm :IProgramms, orgId : n
   useEffect(() => {
     const fetchData = async() =>{
       const res = await getOrgName(Number(orgId))
-      setOrgName(res)
+      setOrgName(res.short_name)
     }
 
     fetchData()
