@@ -1,9 +1,9 @@
-import { ChangeEvent, FormEvent } from 'react';
+// import styles from './students.module.css';
+import { ChangeEvent, FormEvent, useEffect } from 'react';
 import { AppDispatch, RootState } from '../../store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { IStudent, setProgrammId, setStudents } from '../../store/createStudents';
-// import styles from './students.module.css';
 
 export function Students() {
   const dispatch = useDispatch<AppDispatch>();
@@ -11,6 +11,10 @@ export function Students() {
   const StudentsState = useSelector((state: RootState) => state.students);
   const ProgrammState = useSelector((state: RootState) => state.programmPage.programm);
   const allStudents = useSelector((state: RootState) => state.students.students);
+
+  useEffect(() => {
+    dispatch(setStudents([]))
+  },[])
 
   const addStudent = () => {
     const newStudent:IStudent = {
