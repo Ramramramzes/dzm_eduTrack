@@ -14,6 +14,7 @@ export function Students() {
 
   useEffect(() => {
     dispatch(setStudents([]))
+    dispatch(setProgrammId(ProgrammState.programm_id))
   },[])
 
   const addStudent = () => {
@@ -25,7 +26,6 @@ export function Students() {
       snils: '',
     }
     dispatch(setStudents([...allStudents,newStudent]))
-    console.log(allStudents);
   }
 
   const delleteStudent = (id:number) => {
@@ -58,6 +58,7 @@ export function Students() {
       return el;
     }))
   )}
+  
 
   const inputSnilsChange = (id:number, e:ChangeEvent<HTMLInputElement>) => {
     dispatch(setStudents(allStudents.map((el) => {
@@ -74,7 +75,6 @@ export function Students() {
       <form onSubmit={(e:FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         dispatch(setStudents(allStudents))
-        dispatch(setProgrammId(ProgrammState.programm_id))
         console.log(StudentsState);
       }}>
         <>Students</>
