@@ -76,11 +76,16 @@ export function Students() {
       <form onSubmit={(e:FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         dispatch(setStudents(allStudents))
+        const resArr = []
+
         allStudents.forEach(element => {
-          sendStudent(element,StudentsState.programm_id)
+          const res = sendStudent(element,StudentsState.programm_id)
+          resArr.push(res)
         });
-        navigate(-1)
-        alert('Студенты записаны на программу')
+        if(resArr.length > 0){
+          alert('Все студенты записаны')
+          navigate(-1)
+        }
       }}>
         <>Students</>
         {allStudents.length > 0 && allStudents.map((st) => {

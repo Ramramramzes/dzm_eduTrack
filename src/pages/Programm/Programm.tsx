@@ -10,6 +10,7 @@ import { setProgramm } from "../../store/programmState";
 export function Programm() {
   const dispatch = useDispatch<AppDispatch>();
   const ProgrammState = useSelector((state: RootState) => state.programmPage.programm);
+  const LoginState = useSelector((state: RootState) => state.login);
   const location = useLocation();
   const navigate = useNavigate()
   const programmId = location.state;
@@ -26,7 +27,7 @@ useEffect(() => {
     <>
       <div>
         <h1>{ProgrammState.full_name}</h1>
-        <Link to={'/students'}>Записать сотрудников</Link>
+        {LoginState.defaultData[0]?.role === 'МО' ? <Link to={'/students'}>Записать сотрудников</Link> : <></>}
       </div>
       <div>
         <p>Колл-во часов: {ProgrammState.hours}</p>
