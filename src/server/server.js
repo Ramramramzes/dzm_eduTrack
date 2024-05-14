@@ -281,6 +281,31 @@ app.get('/get-available', (req, res) => {
 })
 
 
+
+app.post('/send-students', (req, res) => {
+  const sql = `
+  INSERT INTO \`students\`(
+    \`name\`, 
+    \`surname\`, 
+    \`lastname\`,
+    \`snils\`, 
+    \`programm_id\`)
+    VALUES 
+    (?,?,?,?,?)
+  `
+  const params = [req.body.name,req.body.surname,req.body.lastname,req.body.snils,Number(req.body.programm_id)];
+  
+  connection.query(sql,params,(error, results) => {
+    if (error) {
+      res.status(500).json({ error: 'Ошибка при выполнении запроса к базе данных' });
+      console.log(error.code, error.message);
+    } else {
+      res.send(results);
+    }
+  });
+});
+
+
 app.listen(port, () => {
   console.log(`Запущен на ${port} порту`);
 })

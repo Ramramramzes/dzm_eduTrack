@@ -24,6 +24,7 @@ export default defineConfig({
       '/get-programm': SERVER,
       '/get-org-name': SERVER,
       '/get-available': SERVER,
+      '/send-students': SERVER,
     }
   }
 })

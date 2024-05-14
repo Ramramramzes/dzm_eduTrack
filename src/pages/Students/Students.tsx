@@ -4,6 +4,7 @@ import { AppDispatch, RootState } from '../../store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { IStudent, setProgrammId, setStudents } from '../../store/createStudents';
+import { sendStudent } from '../../services/sendStudents';
 
 export function Students() {
   const dispatch = useDispatch<AppDispatch>();
@@ -75,7 +76,11 @@ export function Students() {
       <form onSubmit={(e:FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         dispatch(setStudents(allStudents))
-        console.log(StudentsState);
+        allStudents.forEach(element => {
+          sendStudent(element,StudentsState.programm_id)
+        });
+        navigate(-1)
+        alert('Студенты записаны на программу')
       }}>
         <>Students</>
         {allStudents.length > 0 && allStudents.map((st) => {
