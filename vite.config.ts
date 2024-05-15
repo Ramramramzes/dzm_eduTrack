@@ -25,6 +25,7 @@ export default defineConfig({
       '/get-org-name': SERVER,
       '/get-available': SERVER,
       '/send-students': SERVER,
+      '/send-dopspec': SERVER,
     }
   }
 })

@@ -1,34 +1,22 @@
 import styles from './programm_adding.module.css';
-import { ChangeEvent, useEffect } from 'react';
+import { ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
-import { setDescription, setDopSpec, setFullName, setHour, setMainSpec, setProgrammAdress, setProgrammName, setProgrammType } from '../../store/popupState';
-import { setPopup } from '../../store/dashboardState';
+import { setDescription, setFullName, setHour, setMainSpec, setProgrammAdress, setProgrammName, setProgrammType } from '../../store/addingProgram';
 import { sendProgramm } from '../../services/sendProgramm';
 import { getOrgId } from '../../services/getOrgId';
 import { useNavigate } from 'react-router-dom';
-const root_popup = document.getElementById('root_popup')
+import { Checkboxes } from '../../Components/Checkboxes';
+import { sendDopSpec } from '../../services/sendDopSpec';
 
 export function Programmadding() {
   const dispatch = useDispatch<AppDispatch>();
-  const PopupState = useSelector((state: RootState) => state.popup);
+  const PopupState = useSelector((state: RootState) => state.addingProg);
   const UserState = useSelector((state: RootState) => state.user);
   const DefaultState = useSelector((state: RootState) => state.default);
-  const popupBlock = document.getElementById('popupBlock');
-  const navigate = useNavigate()
+  const AddingState = useSelector((state: RootState) => state.addingProg.dopspec);
 
-  useEffect(() => {
-    const closePopup = (e:MouseEvent) =>{
-      if(popupBlock && e.target === popupBlock){
-        dispatch(setPopup(false))
-      }
-    }
-    document.addEventListener('click',closePopup)
-    
-    return () =>{
-      document.removeEventListener('click',closePopup)
-    }
-  },[dispatch, popupBlock])
+  const navigate = useNavigate()
 
   const hourHandler = (event: ChangeEvent<HTMLSelectElement>) => {
     dispatch(setHour(Number(event.target.value)))
@@ -40,10 +28,6 @@ export function Programmadding() {
 
   const mainSpecHandler = (event: ChangeEvent<HTMLSelectElement>) => {
     dispatch(setMainSpec(Number(event.target.value)))
-  }
-
-  const dopSpecHandler = (event: ChangeEvent<HTMLSelectElement>) => {
-    dispatch(setDopSpec(Number(event.target.value)))
   }
 
   const fullNameHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -68,15 +52,17 @@ export function Programmadding() {
       <form className={styles.form} onSubmit={async(e) => {
         e.preventDefault()
         const orgIdForReq = await getOrgId(UserState.id)
-        await sendProgramm(PopupState,orgIdForReq)
-        dispatch(setPopup(false))
+        const res = await sendProgramm(PopupState,orgIdForReq)
+        const programmId = res.insertId
         dispatch(setHour(0))
         dispatch(setProgrammName(''))
         dispatch(setMainSpec(0))
-        dispatch(setDopSpec(0))
         dispatch(setFullName(''))
         dispatch(setDescription(''))
         dispatch(setProgrammType(0))
+        AddingState.forEach(async dopspec => {
+            await sendDopSpec(programmId,dopspec)
+        })
         navigate(-1)
       }}>
         <div>
@@ -101,15 +87,7 @@ export function Programmadding() {
             })}
           </select>
         </div>
-        <div>
-          <label htmlFor="dopSpec"></label>
-          <select name="dopSpec" defaultValue={''} onChange={dopSpecHandler}>
-            <option value={''} disabled>Выберите доп специальность</option>
-            {DefaultState.dopSpec.length > 0 && DefaultState.dopSpec.map((spec) => {
-              return <option key={spec.id} value={spec.value}>{spec.name}</option>
-            })}
-          </select>
-        </div>
+        <Checkboxes/>
         <div>
           <label htmlFor="fullName"></label>
           <input type="text" name="fullName" value={PopupState.fullName} onChange={fullNameHandler} placeholder='Полное наименование' required/>
@@ -136,7 +114,6 @@ export function Programmadding() {
             })}
           </select>
         </div>
-        <span className={styles.closeBtn} onClick={() => dispatch(setPopup(false))}>✕</span>
         <input type="submit" value="Отправить программу" />
       </form>
     </div>

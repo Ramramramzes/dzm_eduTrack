@@ -12,7 +12,6 @@ import { GetAvailablePrograms} from '../../hooks/getAvailableProgramms';
 
 export function Dashboard_mo() {
   const dispatch = useDispatch<AppDispatch>();
-  const DashboardState = useSelector((state: RootState) => state.dashboard);
   const LoginState = useSelector((state: RootState) => state.login);
   const UserState = useSelector((state: RootState) => state.user);
   const ProfileState = useSelector((state: RootState) => state.newProfile);
@@ -46,7 +45,7 @@ export function Dashboard_mo() {
     if(ProfileState.user_id === 0){
       fetchData()
     }
-  },[UserState.id, dispatch, DashboardState.popup, ProfileState.user_id])
+  },[UserState.id, dispatch, ProfileState.user_id])
 
 
   return (

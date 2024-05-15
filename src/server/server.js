@@ -191,12 +191,11 @@ app.get('/get-orgid', (req, res) => {
 
 app.post('/send-programm', (req, res) => {
   const { programm, org_id } = req.body;
-  const sql = `INSERT INTO \`programm\`(\`name\`, \`hours\`, \`spec_main\`, \`spec_dop\`, \`full_name\`, \`short_content\`, \`programm_type\`, \`adress\`, \`org_id\`, \`status\`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  const sql = `INSERT INTO \`programm\`(\`name\`, \`hours\`, \`spec_main\`, \`full_name\`, \`short_content\`, \`programm_type\`, \`adress\`, \`org_id\`, \`status\`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
   const params = [
     programm.programmName,
     programm.hours,
     programm.mainSpec,
-    programm.dopSpec,
     programm.fullName,
     programm.description,
     programm.programmType,
@@ -216,7 +215,7 @@ app.post('/send-programm', (req, res) => {
 });
 
 app.get('/get-programs', (req, res) => {
-  const sql = `SELECT \`programm_id\`, \`name\`, \`hours\`, \`spec_main\`, \`spec_dop\`, \`full_name\`, \`short_content\`, \`programm_type\`, \`adress\`, \`org_id\`, \`status\` FROM \`programm\` WHERE \`org_id\` = ?`;
+  const sql = `SELECT \`programm_id\`, \`name\`, \`hours\`, \`spec_main\`, \`full_name\`, \`short_content\`, \`programm_type\`, \`adress\`, \`org_id\`, \`status\` FROM \`programm\` WHERE \`org_id\` = ?`;
 
   connection.query(sql,[req.query.org_id],(error, results) => {
     if (error) {
@@ -294,6 +293,26 @@ app.post('/send-students', (req, res) => {
     (?,?,?,?,?)
   `
   const params = [req.body.name,req.body.surname,req.body.lastname,req.body.snils,Number(req.body.programm_id)];
+  
+  connection.query(sql,params,(error, results) => {
+    if (error) {
+      res.status(500).json({ error: 'Ошибка при выполнении запроса к базе данных' });
+      console.log(error.code, error.message);
+    } else {
+      res.send(results);
+    }
+  });
+});
+
+app.post('/send-dopspec', (req, res) => {
+  const sql = `
+  INSERT INTO \`programm_dop_spec\`(
+    \`programm_id\`, 
+    \`dop_spec_id\`)
+    VALUES 
+    (?,?)
+  `
+  const params = [req.body.programm_id,req.body.dopSpecId];
   
   connection.query(sql,params,(error, results) => {
     if (error) {

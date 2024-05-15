@@ -1,7 +1,5 @@
 import axios from "axios";
-import { IPopup } from "../store/popupState";
-
-
+import { IPopup } from "../store/addingProgram";
 
 export const sendProgramm = async (programm:IPopup,orgIdForReq:number) => {
   try{

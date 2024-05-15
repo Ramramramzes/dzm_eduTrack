@@ -2,8 +2,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import loginReducer from './loginState'
 import userReducer from './userState'
 import newProfileReducer from './createProfileState'
-import dashboardReducer from './dashboardState'
-import popupReducer from './popupState'
+import addingReducer from './addingProgram'
 import defaultReducer from './defaultDataState'
 import programmPageReducer from './programmState'
 import studentsReducer from './createStudents'
@@ -12,8 +11,7 @@ const rootReducer = combineReducers({
   login: loginReducer,
   user: userReducer,
   newProfile: newProfileReducer,
-  dashboard: dashboardReducer, 
-  popup: popupReducer,
+  addingProg: addingReducer,
   default: defaultReducer,
   programmPage: programmPageReducer,
   students: studentsReducer,

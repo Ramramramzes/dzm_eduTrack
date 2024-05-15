@@ -1,14 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { RootState } from "../store/store";
-import { useSelector } from "react-redux";
 
 export interface IProgramms{
   programm_id: number;
   name: string;
   hours: number;
   spec_main: number;
-  spec_dop: number;
   full_name: string;
   short_content: string;
   programm_type: number;
@@ -18,8 +15,6 @@ export interface IProgramms{
 }
 
 export const GetPrograms = (org_id:number) => {
-  const DashboardState = useSelector((state: RootState) => state.dashboard);
-
   const [data,setData] = useState<IProgramms[]>([])
 
   useEffect(() => {
@@ -37,6 +32,6 @@ export const GetPrograms = (org_id:number) => {
       }
     }
     fetchData();
-  },[org_id,DashboardState.popup])
+  },[org_id])
   return data;
 }
