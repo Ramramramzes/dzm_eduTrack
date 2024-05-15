@@ -1,21 +1,21 @@
-import styles from './popup.module.css';
+import styles from './programm_adding.module.css';
 import { ChangeEvent, useEffect } from 'react';
-import { createPortal } from "react-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { setDescription, setDopSpec, setFullName, setHour, setMainSpec, setProgrammAdress, setProgrammName, setProgrammType } from '../../store/popupState';
 import { setPopup } from '../../store/dashboardState';
 import { sendProgramm } from '../../services/sendProgramm';
 import { getOrgId } from '../../services/getOrgId';
+import { useNavigate } from 'react-router-dom';
 const root_popup = document.getElementById('root_popup')
 
-export function Popup() {
+export function Programmadding() {
   const dispatch = useDispatch<AppDispatch>();
   const PopupState = useSelector((state: RootState) => state.popup);
   const UserState = useSelector((state: RootState) => state.user);
   const DefaultState = useSelector((state: RootState) => state.default);
   const popupBlock = document.getElementById('popupBlock');
-
+  const navigate = useNavigate()
 
   useEffect(() => {
     const closePopup = (e:MouseEvent) =>{
@@ -62,11 +62,9 @@ export function Popup() {
     dispatch(setProgrammAdress(event.target.value))
   }
 
-  if (!root_popup) {
-    return <>no poput</>
-  }
-  return createPortal(
+  return (
     <div className={styles.popupBlock} id='popupBlock'>
+      <button onClick={() => navigate(-1)}>Назад</button>
       <form className={styles.form} onSubmit={async(e) => {
         e.preventDefault()
         const orgIdForReq = await getOrgId(UserState.id)
@@ -79,6 +77,7 @@ export function Popup() {
         dispatch(setFullName(''))
         dispatch(setDescription(''))
         dispatch(setProgrammType(0))
+        navigate(-1)
       }}>
         <div>
           <label htmlFor="programmName"></label>
@@ -140,6 +139,6 @@ export function Popup() {
         <span className={styles.closeBtn} onClick={() => dispatch(setPopup(false))}>✕</span>
         <input type="submit" value="Отправить программу" />
       </form>
-    </div>,root_popup
+    </div>
   );
 }

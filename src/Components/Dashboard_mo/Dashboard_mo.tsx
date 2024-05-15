@@ -2,7 +2,6 @@ import styles from './dashboard_mo.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { useNavigate } from 'react-router-dom';
-import { Popup } from '../Popup';
 import { useEffect } from 'react';
 import { getProfile } from '../../services/getProfile';
 import { setProfile } from '../../store/userState';
@@ -58,7 +57,6 @@ export function Dashboard_mo() {
           return  <ProgrammCard key={programm.programm_id} programm={programm} orgId={programm.org_id} />
         })}
       </div>
-      {DashboardState.popup && <Popup />}
     </>
   );
 }

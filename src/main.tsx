@@ -10,6 +10,7 @@ import { Dashboard } from './pages/Dashboard/Dashboard.tsx'
 import { FillProfile } from './pages/FillProfile/FillProfile.tsx'
 import { Programm } from './pages/Programm/Programm.tsx'
 import { Students } from './pages/Students/Students.tsx'
+import { Programmadding } from './pages/Programm_adding/Programm_adding.tsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -19,6 +20,7 @@ const router = createBrowserRouter(
       <Route path="/reg-profile" element={<FillProfile />} />
       <Route path="/programm" element={<Programm />} />
       <Route path="/students" element={<Students />} />
+      <Route path="/programmadding" element={<Programmadding />} />
     </>
   )
 )

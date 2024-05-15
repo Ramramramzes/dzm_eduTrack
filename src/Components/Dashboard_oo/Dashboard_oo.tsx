@@ -3,8 +3,6 @@ import { GetPrograms } from '../../hooks/getPrograms';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { useNavigate } from 'react-router-dom';
-import { setPopup } from '../../store/dashboardState';
-import { Popup } from '../Popup';
 import { useEffect } from 'react';
 import { getProfile } from '../../services/getProfile';
 import { setProfile } from '../../store/userState';
@@ -59,8 +57,7 @@ export function Dashboard_oo() {
           return  <ProgrammCard key={programm.programm_id} programm={programm} orgId={orgId} />
         })}
       </div>
-      {DashboardState.popup && <Popup />}
-      <button onClick={() => {dispatch(setPopup(true))}}>Добавить программу</button>
+      <button onClick={() => navigate('/programmadding')}>Добавить программу</button>
     </>
   );
 }
