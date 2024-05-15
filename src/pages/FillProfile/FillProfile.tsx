@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { getDefaultNames } from "../../services/getDefaultNames";
-import { satisfiesContactInformTel, setContactInformMail, setFioInform, setFioRuk, setMmpCount, setName, setOrgId, setRole, setShortName, setSmpCount, setUserId, setWebsite } from "../../store/createProfileState";
+import { satisfiesContactInformTel, setContactInformMail, setFioInform, setFioRuk, setMmpCount, setName, setOrgId, setRole, setShortName, setSmpCount, setType, setUserId, setWebsite } from "../../store/createProfileState";
 import { Adress } from "../../Components/Adress";
 import { sendProfile } from "../../services/sendProfile";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +15,7 @@ import { IProgrammAdress } from "../../services/getAdress";
 export function FillProfile() {
   const item = useSelector((state: RootState) => state.login.defaultData[0]);
   const ProfileState = useSelector((state: RootState) => state.newProfile);
+  const DefaultState = useSelector((state: RootState) => state.default);
   const dispatch = useDispatch<AppDispatch>();
   const [names, setNames] = useState([{id: 0, name: '', short_name: ''}])
   const navigate = useNavigate();
@@ -36,6 +37,10 @@ export function FillProfile() {
     names.map((el)=> {
       el.short_name === e.target.value ? dispatch(setName(el.name)) : false;
     })
+  }
+
+  const selectChangeHandlerType = (e:ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setType(e.target.value))
   }
 
   const fioRukHandler = (e:ChangeEvent<HTMLInputElement>) => {
@@ -90,6 +95,15 @@ export function FillProfile() {
   }
   return (
       <form onSubmit={submitFormHandler}>
+        <div>
+          <label htmlFor="select_type">Выберите тип организации</label>
+          <select value={ProfileState.type} onChange={selectChangeHandlerType} name="select_type" required>
+            <option value=''>Выберите тип организации</option>
+            {DefaultState.profileType.map((el)=> {
+              return <option key={el.id} value={el.value}>{el.type}</option>
+            })}
+          </select>
+        </div>
         <div>
           <label htmlFor="select_name">Выберите организацию</label>
           <select value={ProfileState.short_name} onChange={selectChangeHandler} name="select_name" required>

@@ -16,6 +16,7 @@ export const sendProfile = async(ProfileState:INewProfile) => {
       smp_count: ProfileState.smp_count,
       mmp_count: ProfileState.mmp_count,
       role: ProfileState.role,
+      profile_type: ProfileState.type
     })
     return (await res).status;
   }catch(err){

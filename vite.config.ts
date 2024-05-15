@@ -26,6 +26,7 @@ export default defineConfig({
       '/get-available': SERVER,
       '/send-students': SERVER,
       '/send-dopspec': SERVER,
+      '/get-profile-type': SERVER,
     }
   }
 })

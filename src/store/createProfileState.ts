@@ -14,6 +14,7 @@ export interface INewProfile{
   mmp_count: number;
   adress: {id: number; value: string}[];
   role: string;
+  type: string;
 }
 
 const initialState:INewProfile = {
@@ -30,6 +31,7 @@ const initialState:INewProfile = {
   mmp_count: 0,
   adress: [{id: new Date().getTime(), value: ''}],
   role: '',
+  type: '',
 }
 
 const newProfileSlice = createSlice({
@@ -75,8 +77,11 @@ const newProfileSlice = createSlice({
     setRole: (state, action) => {
       state.role = action.payload
     },
+    setType: (state, action) => {
+      state.type = action.payload
+    }
   }
 })
 
-export const {setUserId, setOrgId, setName, setShortName, setFioRuk, setFioInform, setContactInformMail, satisfiesContactInformTel, setWebsite, setSmpCount, setMmpCount, setAdress, setRole} = newProfileSlice.actions
+export const {setUserId, setOrgId, setName, setShortName, setFioRuk, setFioInform, setContactInformMail, satisfiesContactInformTel, setWebsite, setSmpCount, setMmpCount, setAdress, setRole, setType} = newProfileSlice.actions
 export default newProfileSlice.reducer

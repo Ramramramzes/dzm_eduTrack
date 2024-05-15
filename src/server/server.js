@@ -78,11 +78,12 @@ app.post('/send-profile', (req, res) => {
     \`website\`, 
     \`smp_count\`, 
     \`mmp_count\`, 
-    \`role\`) 
+    \`role\`,
+    \`profile_type\`) 
     VALUES 
-    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `
-  const params = [req.body.user_id, req.body.org_id, req.body.name, req.body.short_name, req.body.fio_ruk, req.body.fio_inform, req.body.contact_inform_mail, req.body.contact_inform_tel, req.body.website, req.body.smp_count, req.body.mmp_count, req.body.role]
+  const params = [req.body.user_id, req.body.org_id, req.body.name, req.body.short_name, req.body.fio_ruk, req.body.fio_inform, req.body.contact_inform_mail, req.body.contact_inform_tel, req.body.website, req.body.smp_count, req.body.mmp_count, req.body.role, req.body.profile_type]
   
   connection.query(sql,params,(error, results) => {
     if (error) {
@@ -324,7 +325,18 @@ app.post('/send-dopspec', (req, res) => {
   });
 });
 
+app.get('/get-profile-type', (req, res) => {
+  const sql = `SELECT * FROM \`profile_type\` WHERE 1`;
 
+  connection.query(sql,(error, results) => {
+    if (error) {
+      res.status(500).json({ error: 'Ошибка при выполнении запроса к базе данных' });
+      console.log(error.code, error.message);
+    } else {
+      res.send(results);
+    }
+  });
+})
 app.listen(port, () => {
   console.log(`Запущен на ${port} порту`);
 })
