@@ -5,6 +5,7 @@ import { IHours, getHours } from "../services/getHours";
 import { IMainSpec, getMainSpec } from "../services/getMainSpec";
 import { IProgrammType, getProgrammType } from "../services/getProgrammType";
 import { IProfileType, getProfileType } from "../services/getDefaultProfileType";
+import { IProgrammVid, getProgrammVid } from "../services/getProgrammVid";
 
 interface IDefaultData{
   hours: IHours[];
@@ -13,6 +14,7 @@ interface IDefaultData{
   programmType: IProgrammType[];
   adress: IProgrammAdress[]
   profileType: IProfileType[]
+  vid: IProgrammVid[]
 }
 
 const initialState: IDefaultData = {
@@ -21,6 +23,7 @@ const initialState: IDefaultData = {
   dopSpec: await getDopSpec(),
   programmType: await getProgrammType(),
   profileType: await getProfileType(),
+  vid: await getProgrammVid(),
   adress: [],
 }
 

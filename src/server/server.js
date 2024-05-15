@@ -164,6 +164,19 @@ app.get('/get-programm-type', (req, res) => {
   });
 })
 
+app.get('/get-programm-vid', (req, res) => {
+  const sql = `SELECT * FROM \`programm_vid\` WHERE 1`
+
+  connection.query(sql,(error, results) => {
+    if (error) {
+      res.status(500).json({ error: 'Ошибка при выполнении запроса к базе данных' });
+      console.log(error.code, error.message);
+    } else {
+      res.send(results);
+    }
+  });
+})
+
 app.get('/get-programm-adress', (req, res) => {
   const sql = `SELECT * FROM \`adresses\` WHERE \`profile_id\` = ?`;
 
@@ -192,7 +205,7 @@ app.get('/get-orgid', (req, res) => {
 
 app.post('/send-programm', (req, res) => {
   const { programm, org_id } = req.body;
-  const sql = `INSERT INTO \`programm\`(\`name\`, \`hours\`, \`spec_main\`, \`full_name\`, \`short_content\`, \`programm_type\`, \`adress\`, \`org_id\`, \`status\`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  const sql = `INSERT INTO \`programm\`(\`name\`, \`hours\`, \`spec_main\`, \`full_name\`, \`short_content\`, \`programm_type\`, \`adress\`, \`org_id\`, \`status\`, \`vid\`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
   const params = [
     programm.programmName,
     programm.hours,
@@ -202,7 +215,8 @@ app.post('/send-programm', (req, res) => {
     programm.programmType,
     programm.adress,
     Number(org_id),
-    programm.status
+    programm.status,
+    programm.vid
   ];
 
   connection.query(sql, params, (error, results) => {

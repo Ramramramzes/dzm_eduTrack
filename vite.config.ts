@@ -27,6 +27,7 @@ export default defineConfig({
       '/send-students': SERVER,
       '/send-dopspec': SERVER,
       '/get-profile-type': SERVER,
+      '/get-programm-vid': SERVER,
     }
   }
 })

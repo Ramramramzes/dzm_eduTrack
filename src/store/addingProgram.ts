@@ -11,6 +11,7 @@ export interface IPopup{
   programmType: number;
   adress: IProgrammAdress[];
   status: number;
+  vid: number;
 }
 
 const initialState: IPopup = {
@@ -23,6 +24,7 @@ const initialState: IPopup = {
   programmType: 0,
   adress: [],
   status: 100,
+  vid: 0
 }
 
 const popupSlice = createSlice({
@@ -52,10 +54,13 @@ const popupSlice = createSlice({
     },
     setDopSpec: (state,action) => {
       state.dopspec = action.payload
+    },
+    setVid: (state,action) => {
+      state.vid = action.payload
     }
 
   }
 })
 
-export const {setHour, setProgrammName, setMainSpec, setFullName, setDescription, setProgrammType, setProgrammAdress, setDopSpec } = popupSlice.actions
+export const {setHour, setProgrammName, setMainSpec, setFullName, setDescription, setProgrammType, setProgrammAdress, setDopSpec, setVid } = popupSlice.actions
 export default popupSlice.reducer

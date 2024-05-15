@@ -2,7 +2,7 @@ import styles from './programm_adding.module.css';
 import { ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
-import { setDescription, setFullName, setHour, setMainSpec, setProgrammAdress, setProgrammName, setProgrammType } from '../../store/addingProgram';
+import { setDescription, setFullName, setHour, setMainSpec, setProgrammAdress, setProgrammName, setProgrammType, setVid } from '../../store/addingProgram';
 import { sendProgramm } from '../../services/sendProgramm';
 import { getOrgId } from '../../services/getOrgId';
 import { useNavigate } from 'react-router-dom';
@@ -42,6 +42,10 @@ export function Programmadding() {
     dispatch(setProgrammType(Number(event.target.value)))
   }
 
+  const programmVidHandler = (event: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setVid(Number(event.target.value)))
+  }
+
   const adressHandler = (event: ChangeEvent<HTMLSelectElement>) => {
     dispatch(setProgrammAdress(event.target.value))
   }
@@ -54,15 +58,16 @@ export function Programmadding() {
         const orgIdForReq = await getOrgId(UserState.id)
         const res = await sendProgramm(PopupState,orgIdForReq)
         const programmId = res.insertId
+        AddingState.forEach(async dopspec => {
+          await sendDopSpec(programmId,dopspec)
+      })
         dispatch(setHour(0))
         dispatch(setProgrammName(''))
         dispatch(setMainSpec(0))
         dispatch(setFullName(''))
         dispatch(setDescription(''))
         dispatch(setProgrammType(0))
-        AddingState.forEach(async dopspec => {
-            await sendDopSpec(programmId,dopspec)
-        })
+        dispatch(setVid(0))
         navigate(-1)
       }}>
         <div>
@@ -100,8 +105,17 @@ export function Programmadding() {
           <label htmlFor="programmType"></label>
           <select name="programmType" required defaultValue={''} onChange={programmTypeHandler}>
             <option value={''} disabled>Выберите тип программы</option>
-            {DefaultState.programmType.length > 0 && DefaultState.programmType.map((spec) => {
-              return <option key={spec.id} value={spec.value}>{spec.type}</option>
+            {DefaultState.programmType.length > 0 && DefaultState.programmType.map((type) => {
+              return <option key={type.id} value={type.value}>{type.type}</option>
+            })}
+          </select>
+        </div>
+        <div>
+          <label htmlFor="programmVid"></label>
+          <select name="programmVid" required defaultValue={''} onChange={programmVidHandler}>
+            <option value={''} disabled>Выберите вид программы</option>
+            {DefaultState.vid.length > 0 && DefaultState.vid.map((vid) => {
+              return <option key={vid.id} value={vid.value}>{vid.vid}</option>
             })}
           </select>
         </div>
