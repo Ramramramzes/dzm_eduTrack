@@ -12,6 +12,7 @@ export interface IProgramms{
   adress: string;
   org_id: number;
   status: number;
+  vid: number;
 }
 
 export const GetPrograms = (org_id:number) => {

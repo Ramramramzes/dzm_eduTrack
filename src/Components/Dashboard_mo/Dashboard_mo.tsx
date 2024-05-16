@@ -7,7 +7,6 @@ import { getProfile } from '../../services/getProfile';
 import { setProfile } from '../../store/userState';
 import { getAdress } from '../../services/getAdress';
 import { setDefAdress } from '../../store/defaultDataState';
-import { ProgrammCard } from '../ProgrammCard';
 import { GetAvailablePrograms} from '../../hooks/getAvailableProgramms';
 
 export function Dashboard_mo() {
@@ -53,7 +52,7 @@ export function Dashboard_mo() {
       <h1>Образовательные программы</h1>
       <div className={styles.cardsBlock}>
         {programms && programms.map((programm) => {
-          return  <ProgrammCard key={programm.programm_id} programm={programm} orgId={programm.org_id} />
+          return  <>{programm.name}</>
         })}
       </div>
     </>

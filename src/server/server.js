@@ -230,7 +230,7 @@ app.post('/send-programm', (req, res) => {
 });
 
 app.get('/get-programs', (req, res) => {
-  const sql = `SELECT \`programm_id\`, \`name\`, \`hours\`, \`spec_main\`, \`full_name\`, \`short_content\`, \`programm_type\`, \`adress\`, \`org_id\`, \`status\` FROM \`programm\` WHERE \`org_id\` = ?`;
+  const sql = `SELECT \`programm_id\`, \`name\`, \`hours\`, \`spec_main\`, \`full_name\`, \`short_content\`, \`programm_type\`, \`adress\`, \`org_id\`, \`status\`, \`vid\` FROM \`programm\` WHERE \`org_id\` = ?`;
 
   connection.query(sql,[req.query.org_id],(error, results) => {
     if (error) {
@@ -351,6 +351,21 @@ app.get('/get-profile-type', (req, res) => {
     }
   });
 })
+
+app.get('/get-dop-spec-id', (req, res) => {
+  const sql = `SELECT * FROM \`programm_dop_spec\` WHERE \`programm_id\` = ?`
+  const params = [req.query.programm_id]
+
+  connection.query(sql,params,(error, results) => {
+    if (error) {
+      res.status(500).json({ error: 'Ошибка при выполнении запроса к базе данных' });
+      console.log(error.code, error.message);
+    } else {
+      res.send(results);
+    }
+  });
+})
+
 app.listen(port, () => {
   console.log(`Запущен на ${port} порту`);
 })

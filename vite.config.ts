@@ -28,6 +28,7 @@ export default defineConfig({
       '/send-dopspec': SERVER,
       '/get-profile-type': SERVER,
       '/get-programm-vid': SERVER,
+      '/get-dop-spec-id': SERVER,
     }
   }
 })
