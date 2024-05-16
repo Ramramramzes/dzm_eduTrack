@@ -10,6 +10,7 @@ import { getAdress } from '../../services/getAdress';
 import { setDefAdress } from '../../store/defaultDataState';
 import { IDopSpecId, getDopSpecId } from '../../services/getDopSpecId';
 
+
 export function Dashboard_oo() {
   const dispatch = useDispatch<AppDispatch>();
   const LoginState = useSelector((state: RootState) => state.login);
@@ -17,7 +18,7 @@ export function Dashboard_oo() {
   const ProfileState = useSelector((state: RootState) => state.newProfile);
   const DefaultState = useSelector((state: RootState) => state.default);
   const navigate = useNavigate();
-  const [dopSpecs,setDopSpecs] = useState<IDopSpecId[]>([])
+  const [dopSpecs, setDopSpecs] = useState<IDopSpecId[][]>([]);
   const orgId = LoginState.defaultData?.[0]?.org_id ? LoginState.defaultData[0].org_id : 0
   const programms =  GetPrograms(orgId)
 
@@ -49,17 +50,26 @@ export function Dashboard_oo() {
   },[UserState.id, dispatch, ProfileState.user_id])
 
   useEffect(() => {
+    setDopSpecs([]);
+  
     const fetchData = async (id: number) => {
-      const res = await getDopSpecId(id)
-      setDopSpecs(res.map((el:number) => el))
-    }
-
-    programms.forEach(item => {
-      fetchData(item.programm_id);
-    });
-    
+      const res = await getDopSpecId(id);
+      return res;
+    };
+  
+    Promise.all(programms.map(item => fetchData(item.programm_id)))
+      .then(results => {
+        setDopSpecs(results);
+      })
+      .catch(error => {
+        console.error('Error fetching dopSpecs:', error);
+      });
   }, [programms]);
+  
+  
 
+  
+  
   return (
     <>
       <h1>Программы {UserState && UserState.profile && UserState.profile.short_name}</h1>
@@ -79,30 +89,26 @@ export function Dashboard_oo() {
           </tr>
         </thead>
         <tbody>
-          {programms.map(item => (
+          {programms.map((item, progIndex)=> (
             <tr key={item.programm_id}>
               <td><Link to='/programm' state={item.programm_id} className={styles.link}>{item.name}</Link></td>
               <td>{item.status === 100 ? 'В обработке' : item.status === 200? 'Рабочая' : 'Исправить'}</td>
               <td>{DefaultState.vid[item.vid-1].vid}</td>
-              <td>{DefaultState.mainSpec[item.spec_main].name}</td>
-              <td>Созд</td>
+              <td>{DefaultState.mainSpec[item.spec_main-1]?.name}</td>
+              <td>{`${new Date(Number(item.date)).getDate() < 10 ? '0' : ''}${new Date(Number(item.date)).getDate()}.${(new Date(Number(item.date)).getMonth() + 1 < 10 ? '0' : '')}${new Date(Number(item.date)).getMonth() + 1}.${new Date(Number(item.date)).getFullYear()} ${(new Date(Number(item.date)).getHours() < 10 ? '0' : '')}${new Date(Number(item.date)).getHours()}:${(new Date(Number(item.date)).getMinutes() < 10 ? '0' : '')}${new Date(Number(item.date)).getMinutes()}`}</td>
               <td>Изм</td>
-              <td>{dopSpecs.map((el:IDopSpecId,index:number) => {
-                return <span key={el.id}>{DefaultState.dopSpec[el.dop_spec_id-1].name}{index != dopSpecs.length-1 ? ', ' : '.'}</span>
-              })}</td>
+              <td>{dopSpecs[progIndex]?.map((el, index) => (
+                <span key={index}>
+                  {DefaultState.dopSpec[el.dop_spec_id-1]?.name}
+                  {index !== dopSpecs[progIndex].length - 1 ? ', ' : ''}
+                </span>
+              ))}</td>
               <td>{item.hours}</td>
               <td>{item.adress}</td>
             </tr>
           ))}
         </tbody>
       </table>
-      {/* <h1>Программы {UserState && UserState.profile && UserState.profile.short_name}</h1>
-      <div className={styles.cardsBlock}>
-        {programms && programms.map((programm) => {
-          return  <ProgrammCard key={programm.programm_id} programm={programm} orgId={orgId} />
-        })}
-      </div>
-      <button onClick={() => navigate('/programmadding')}>Добавить программу</button> */}
     </>
   );
 }

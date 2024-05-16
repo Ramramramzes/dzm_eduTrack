@@ -2,7 +2,7 @@ import styles from './programm_adding.module.css';
 import { ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
-import { setDescription, setFullName, setHour, setMainSpec, setProgrammAdress, setProgrammName, setProgrammType, setVid } from '../../store/addingProgram';
+import { setDate, setDescription, setDopSpec, setFullName, setHour, setMainSpec, setProgrammAdress, setProgrammName, setProgrammType, setVid } from '../../store/addingProgram';
 import { sendProgramm } from '../../services/sendProgramm';
 import { getOrgId } from '../../services/getOrgId';
 import { useNavigate } from 'react-router-dom';
@@ -48,6 +48,8 @@ export function Programmadding() {
 
   const adressHandler = (event: ChangeEvent<HTMLSelectElement>) => {
     dispatch(setProgrammAdress(event.target.value))
+    const createDate = new Date().getTime()
+    dispatch(setDate(createDate.toString()))
   }
 
   return (
@@ -68,7 +70,9 @@ export function Programmadding() {
         dispatch(setDescription(''))
         dispatch(setProgrammType(0))
         dispatch(setVid(0))
+        dispatch(setDopSpec([]))
         navigate(-1)
+        
       }}>
         <div>
           <label htmlFor="programmName"></label>

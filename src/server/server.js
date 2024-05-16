@@ -205,7 +205,7 @@ app.get('/get-orgid', (req, res) => {
 
 app.post('/send-programm', (req, res) => {
   const { programm, org_id } = req.body;
-  const sql = `INSERT INTO \`programm\`(\`name\`, \`hours\`, \`spec_main\`, \`full_name\`, \`short_content\`, \`programm_type\`, \`adress\`, \`org_id\`, \`status\`, \`vid\`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  const sql = `INSERT INTO \`programm\`(\`name\`, \`hours\`, \`spec_main\`, \`full_name\`, \`short_content\`, \`programm_type\`, \`adress\`, \`org_id\`, \`status\`, \`vid\`, \`date\`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
   const params = [
     programm.programmName,
     programm.hours,
@@ -216,7 +216,8 @@ app.post('/send-programm', (req, res) => {
     programm.adress,
     Number(org_id),
     programm.status,
-    programm.vid
+    programm.vid,
+    programm.date
   ];
 
   connection.query(sql, params, (error, results) => {
@@ -230,7 +231,7 @@ app.post('/send-programm', (req, res) => {
 });
 
 app.get('/get-programs', (req, res) => {
-  const sql = `SELECT \`programm_id\`, \`name\`, \`hours\`, \`spec_main\`, \`full_name\`, \`short_content\`, \`programm_type\`, \`adress\`, \`org_id\`, \`status\`, \`vid\` FROM \`programm\` WHERE \`org_id\` = ?`;
+  const sql = `SELECT * FROM \`programm\` WHERE \`org_id\` = ?`;
 
   connection.query(sql,[req.query.org_id],(error, results) => {
     if (error) {

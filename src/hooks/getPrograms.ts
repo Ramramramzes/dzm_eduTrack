@@ -13,7 +13,8 @@ export interface IProgramms{
   org_id: number;
   status: number;
   vid: number;
-  spec_dop: number
+  spec_dop: number;
+  date: string;
 }
 
 export const GetPrograms = (org_id:number) => {
