@@ -68,6 +68,7 @@ export function Dashboard_oo() {
         <thead>
           <tr>
             <th>Наименование образовательной программы</th>
+            <th>Статус</th>
             <th>Вид дополнительной программы</th>
             <th>Основная специальность</th>
             <th>Дата создания</th>
@@ -81,12 +82,13 @@ export function Dashboard_oo() {
           {programms.map(item => (
             <tr key={item.programm_id}>
               <td><Link to='/programm' state={item.programm_id} className={styles.link}>{item.name}</Link></td>
+              <td>{item.status === 100 ? 'В обработке' : item.status === 200? 'Рабочая' : 'Исправить'}</td>
               <td>{DefaultState.vid[item.vid-1].vid}</td>
               <td>{DefaultState.mainSpec[item.spec_main].name}</td>
               <td>Созд</td>
               <td>Изм</td>
-              <td>{dopSpecs.map((el:IDopSpecId) => {
-                return <div key={el.id}>{DefaultState.dopSpec[el.dop_spec_id-1].name}</div>
+              <td>{dopSpecs.map((el:IDopSpecId,index:number) => {
+                return <span key={el.id}>{DefaultState.dopSpec[el.dop_spec_id-1].name}{index != dopSpecs.length-1 ? ', ' : '.'}</span>
               })}</td>
               <td>{item.hours}</td>
               <td>{item.adress}</td>

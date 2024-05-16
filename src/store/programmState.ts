@@ -18,6 +18,7 @@ const initialState: IProgrammPage = {
     adress: '',
     org_id: 0,
     status: 0,
+    vid: 0
   }
 }
 
