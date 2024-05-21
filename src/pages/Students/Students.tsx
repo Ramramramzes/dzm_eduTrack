@@ -3,8 +3,9 @@ import { ChangeEvent, FormEvent, useEffect } from 'react';
 import { AppDispatch, RootState } from '../../store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { IStudent, setProgrammId, setStudents } from '../../store/createStudents';
+import { IStudent, setProgrammId, setSpecs, setStudents } from '../../store/createStudents';
 import { sendStudent } from '../../services/sendStudents';
+import { Student_spec } from '../../Components/Student_spec';
 
 export function Students() {
   const dispatch = useDispatch<AppDispatch>();
@@ -13,24 +14,28 @@ export function Students() {
   const ProgrammState = useSelector((state: RootState) => state.programmPage.programm);
   const allStudents = useSelector((state: RootState) => state.students.students);
 
+
   useEffect(() => {
     dispatch(setStudents([]))
     dispatch(setProgrammId(ProgrammState.programm_id))
   },[])
 
   const addStudent = () => {
+    const createId = new Date().getTime()
     const newStudent:IStudent = {
-      id: new Date().getTime(),
+      id: createId,
       name: '',
       surname: '',
       lastname: '',
       snils: '',
     }
+    dispatch(setSpecs([...StudentsState.specs,{id: createId, oneStudentSpecs: []}]))
     dispatch(setStudents([...allStudents,newStudent]))
   }
 
   const delleteStudent = (id:number) => {
     dispatch(setStudents(allStudents.filter(student => student.id !== id)));
+    dispatch(setSpecs(StudentsState.specs.filter(el => el.id !== id)));
   }
 
   const inputNameChange = (id:number, e:ChangeEvent<HTMLInputElement>) => {
@@ -99,6 +104,7 @@ export function Students() {
                   <label htmlFor="snils">СНИЛС</label>
                   <input required onChange={(e) => inputSnilsChange(st.id,e)} type="text" name='snils' value={st.snils}/>
                   <button onClick={() => delleteStudent(st.id)}>X</button>
+                  <Student_spec id={st.id} />
                 </div>
         })}
         <button onClick={() => navigate(-1)}>Назад</button>
