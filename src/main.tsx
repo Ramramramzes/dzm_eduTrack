@@ -11,6 +11,7 @@ import { FillProfile } from './pages/FillProfile/FillProfile.tsx'
 import { Programm } from './pages/Programm/Programm.tsx'
 import { Students } from './pages/Students/Students.tsx'
 import { Programmadding } from './pages/Programm_adding/Programm_adding.tsx'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const router = createBrowserRouter(
   createRoutesFromElements(

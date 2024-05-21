@@ -5,6 +5,7 @@ import { AppDispatch, RootState } from "../../store/store";
 import { ChangeEvent, useEffect } from "react";
 import { IMainSpec } from "../../services/getMainSpec";
 import { setOneStudentSpecs } from "../../store/createStudents";
+import Accordion from 'react-bootstrap/Accordion';
 
 export function Student_spec({id}:{id: number}) {
   const dispatch = useDispatch<AppDispatch>();
@@ -32,13 +33,18 @@ useEffect(() => {
 });
 
   return (
-    <>
-      {allChecks.map((el,index) => {
-        return <div key={index}>
-                <label htmlFor={`${el.name}`}>{el.name}</label>
-                <input type="checkbox" name={`${el.name}`} value={el.value} onChange={(e:ChangeEvent<HTMLInputElement>) => checkChange(id,el,e.target.checked)}/>
-              </div>
-      })}
-    </>
+    <Accordion>
+      <Accordion.Item eventKey="0">
+        <Accordion.Header>Выбрать специальности</Accordion.Header>
+        <Accordion.Body>
+        {allChecks.map((el,index) => {
+          return <div key={index}>
+                  <label htmlFor={`${el.name}`}>{el.name}</label>
+                  <input type="checkbox" name={`${el.name}`} value={el.value} onChange={(e:ChangeEvent<HTMLInputElement>) => checkChange(id,el,e.target.checked)} />
+                </div>
+        })}
+        </Accordion.Body>
+      </Accordion.Item>
+    </Accordion>
   );
 }
