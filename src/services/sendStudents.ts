@@ -8,6 +8,7 @@ export const sendStudent = async(student:IStudent,programm_id:number) => {
       surname:student.surname,
       lastname:student.lastname,
       snils:student.snils,
+      main_spec:student.mainSpec,
       programm_id:programm_id,
     })
     return (await res).status;

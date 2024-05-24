@@ -304,11 +304,12 @@ app.post('/send-students', (req, res) => {
     \`surname\`, 
     \`lastname\`,
     \`snils\`, 
+    \`main_spec\`, 
     \`programm_id\`)
     VALUES 
-    (?,?,?,?,?)
+    (?,?,?,?,?,?)
   `
-  const params = [req.body.name,req.body.surname,req.body.lastname,req.body.snils,Number(req.body.programm_id)];
+  const params = [req.body.name,req.body.surname,req.body.lastname,req.body.snils,req.body.main_spec,Number(req.body.programm_id)];
   
   connection.query(sql,params,(error, results) => {
     if (error) {

@@ -13,7 +13,7 @@ export function Students() {
   const StudentsState = useSelector((state: RootState) => state.students);
   const ProgrammState = useSelector((state: RootState) => state.programmPage.programm);
   const allStudents = useSelector((state: RootState) => state.students.students);
-
+  const DefaultState = useSelector((state: RootState) => state.default);
 
   useEffect(() => {
     dispatch(setStudents([]))
@@ -28,6 +28,7 @@ export function Students() {
       surname: '',
       lastname: '',
       snils: '',
+      mainSpec: '',
     }
     dispatch(setSpecs([...StudentsState.specs,{id: createId, oneStudentSpecs: []}]))
     dispatch(setStudents([...allStudents,newStudent]))
@@ -75,6 +76,14 @@ export function Students() {
     }))
   )}
   
+  const selectChangeMainspec = (id:number, e:ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setStudents(allStudents.map((el) => {
+      if(el.id === id){
+        return {...el,mainSpec: e.target.value,}
+      }
+      return el;
+    })))
+  }
 
   return (
     <>
@@ -103,6 +112,13 @@ export function Students() {
                   <input required onChange={(e) => inputLastnameChange(st.id,e)} type="text" name='lastname' value={st.lastname}/>
                   <label htmlFor="snils">СНИЛС</label>
                   <input required onChange={(e) => inputSnilsChange(st.id,e)} type="text" name='snils' value={st.snils}/>
+                  <label htmlFor="select_mainspec">Выберите организацию</label>
+                  <select value={st.mainSpec} onChange={(e) => selectChangeMainspec(st.id,e)} name="select_mainspec" required>
+                    <option value=''>Основная специальность</option>
+                    {DefaultState.mainSpec.map((el)=> {
+                      return <option key={el.id} value={el.value}>{el.name}</option>
+                    })}
+                  </select>
                   <button onClick={() => delleteStudent(st.id)}>X</button>
                   <Student_spec id={st.id} />
                 </div>

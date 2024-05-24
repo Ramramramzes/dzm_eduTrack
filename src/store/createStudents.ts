@@ -21,6 +21,7 @@ export interface IStudent{
   surname: string,
   lastname: string,
   snils: string,
+  mainSpec: number | string,
 }
 
 const initialState:IStudents = {
@@ -48,7 +49,7 @@ const studentsSlice = createSlice({
           specEl.oneStudentSpecs = action.payload.oneStudentSpecs;
         }
       })
-    }
+    },
 
   }
 })
